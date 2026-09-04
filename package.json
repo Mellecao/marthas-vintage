@@ -6,12 +6,18 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "logo:split": "node scripts/split-logo-svg.mjs",
+    "logo:raster": "node scripts/raster-logo-parts.mjs",
+    "motion": "remotion studio",
+    "motion:render": "remotion render MarthasLogo out/marthas-logo.mp4"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
     "@react-three/drei": "^10.7.8",
     "@react-three/fiber": "^9.7.0",
+    "@remotion/cli": "4.0.519",
+    "@remotion/player": "4.0.519",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "gsap": "^3.15.0",
@@ -20,6 +26,7 @@
     "next": "16.3.3",
     "react": "19.2.8",
     "react-dom": "19.2.8",
+    "remotion": "4.0.519",
     "shadcn": "^4.19.1",
     "tailwind-merge": "^3.6.0",
     "three": "^0.185.1",
@@ -33,6 +40,8 @@
     "@types/three": "^0.185.4",
     "eslint": "^9",
     "eslint-config-next": "16.3.3",
+    "svg-path-bbox": "^2.1.0",
+    "svg-path-properties": "^2.1.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

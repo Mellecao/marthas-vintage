@@ -1,0 +1,389 @@
+{
+  "viewBox": "0 0 5527.01 4282.68",
+  "parts": [
+    {
+      "id": "traços-do-chao",
+      "file": "tracos-do-chao.svg",
+      "kb": 230,
+      "bbox": {
+        "x": 565.9,
+        "y": 3993.7,
+        "width": 4412.3,
+        "height": 289
+      }
+    },
+    {
+      "id": "corgi",
+      "file": "corgi.svg",
+      "kb": 709,
+      "bbox": {
+        "x": 3216.5,
+        "y": 2954.7,
+        "width": 1323.5,
+        "height": 1297.1
+      }
+    },
+    {
+      "id": "mulher-azsset",
+      "file": "mulher-azsset.svg",
+      "kb": 4546,
+      "bbox": {
+        "x": 1905,
+        "y": 460.7,
+        "width": 1436,
+        "height": 3782
+      }
+    },
+    {
+      "id": "artha",
+      "file": "artha.svg",
+      "kb": 5,
+      "bbox": {
+        "x": 1342.6,
+        "y": 154.6,
+        "width": 1199.2,
+        "height": 712.6
+      }
+    },
+    {
+      "id": "s",
+      "file": "s.svg",
+      "kb": 1,
+      "bbox": {
+        "x": 2663.9,
+        "y": 95.8,
+        "width": 277.5,
+        "height": 333.2
+      }
+    },
+    {
+      "id": "intage",
+      "file": "intage.svg",
+      "kb": 6,
+      "bbox": {
+        "x": 3654.7,
+        "y": 304.7,
+        "width": 1542.9,
+        "height": 1006.8
+      }
+    },
+    {
+      "id": "BTRFLY-left",
+      "file": "btrfly-left.svg",
+      "kb": 266,
+      "bbox": {
+        "x": 0,
+        "y": 1534.7,
+        "width": 382,
+        "height": 377
+      }
+    },
+    {
+      "id": "BTRLFLY2-midleleft",
+      "file": "btrlfly2-midleleft.svg",
+      "kb": 316,
+      "bbox": {
+        "x": 1560,
+        "y": 765.7,
+        "width": 422,
+        "height": 418
+      }
+    },
+    {
+      "id": "BTRLFLY3-middleright",
+      "file": "btrlfly3-middleright.svg",
+      "kb": 291,
+      "bbox": {
+        "x": 3482,
+        "y": 811.7,
+        "width": 404,
+        "height": 385
+      }
+    },
+    {
+      "id": "BTRLFLY4-right",
+      "file": "btrlfly4-right.svg",
+      "kb": 274,
+      "bbox": {
+        "x": 5137,
+        "y": 1518.7,
+        "width": 390,
+        "height": 368
+      }
+    },
+    {
+      "id": "caule-e-folhas-esquerdo",
+      "file": "caule-e-folhas-esquerdo.svg",
+      "kb": 2215,
+      "bbox": {
+        "x": 140,
+        "y": 1293.7,
+        "width": 1980,
+        "height": 2824
+      }
+    },
+    {
+      "id": "botao-de-rosa-topo-esquerdo",
+      "file": "botao-de-rosa-topo-esquerdo.svg",
+      "kb": 235,
+      "bbox": {
+        "x": 1229.2,
+        "y": 1291.7,
+        "width": 695.4,
+        "height": 690
+      }
+    },
+    {
+      "id": "botao-de-rosa-meio-esquerdo",
+      "file": "botao-de-rosa-meio-esquerdo.svg",
+      "kb": 557,
+      "bbox": {
+        "x": 355.2,
+        "y": 1950.7,
+        "width": 1047.3,
+        "height": 911.2
+      }
+    },
+    {
+      "id": "botao-de-rosa-meio-abaixo-esquerdo",
+      "file": "botao-de-rosa-meio-abaixo-esquerdo.svg",
+      "kb": 133,
+      "bbox": {
+        "x": 215.6,
+        "y": 2977.5,
+        "width": 485.7,
+        "height": 422.5
+      }
+    },
+    {
+      "id": "botão-de-rosa-abaixo-esquerda",
+      "file": "botao-de-rosa-abaixo-esquerda.svg",
+      "kb": 129,
+      "bbox": {
+        "x": 1587.9,
+        "y": 3559.6,
+        "width": 424.2,
+        "height": 506.1
+      }
+    },
+    {
+      "id": "caule-e-folhas-direito",
+      "file": "caule-e-folhas-direito.svg",
+      "kb": 1984,
+      "bbox": {
+        "x": 3309,
+        "y": 1301.7,
+        "width": 2054,
+        "height": 2784.5
+      }
+    },
+    {
+      "id": "botão-de-rosa-topo-direito",
+      "file": "botao-de-rosa-topo-direito.svg",
+      "kb": 231,
+      "bbox": {
+        "x": 3501.3,
+        "y": 1243.7,
+        "width": 679.9,
+        "height": 698.3
+      }
+    },
+    {
+      "id": "botao-de-rosa-meio-direito",
+      "file": "botao-de-rosa-meio-direito.svg",
+      "kb": 603,
+      "bbox": {
+        "x": 4050.8,
+        "y": 1858.7,
+        "width": 1106.2,
+        "height": 996.7
+      }
+    },
+    {
+      "id": "botao-de-rosa-abaixo-direito",
+      "file": "botao-de-rosa-abaixo-direito.svg",
+      "kb": 130,
+      "bbox": {
+        "x": 4795.8,
+        "y": 2930.9,
+        "width": 490.7,
+        "height": 449
+      }
+    },
+    {
+      "id": "swash-lettering",
+      "file": "swash-lettering.svg",
+      "kb": 1,
+      "bbox": {
+        "x": 3126.3,
+        "y": 0,
+        "width": 983,
+        "height": 680.1
+      }
+    },
+    {
+      "id": "M-lettering",
+      "file": "m-lettering.svg",
+      "kb": 2,
+      "bbox": {
+        "x": 354.1,
+        "y": 212.4,
+        "width": 1061.7,
+        "height": 1297.9
+      }
+    },
+    {
+      "id": "apostrofo-lettering",
+      "file": "apostrofo-lettering.svg",
+      "kb": 1,
+      "bbox": {
+        "x": 2621,
+        "y": 22.6,
+        "width": 101.9,
+        "height": 163.6
+      }
+    }
+  ],
+  "letters": [
+    {
+      "id": "a-artha-primeiro",
+      "file": "letra-a-artha-primeiro.svg",
+      "bbox": {
+        "x": 1342.6,
+        "y": 526.6,
+        "width": 284.9,
+        "height": 340.6
+      }
+    },
+    {
+      "id": "r-artha",
+      "file": "letra-r-artha.svg",
+      "bbox": {
+        "x": 1542.6,
+        "y": 388.6,
+        "width": 272.1,
+        "height": 326.7
+      }
+    },
+    {
+      "id": "t-artha",
+      "file": "letra-t-artha.svg",
+      "bbox": {
+        "x": 1655.8,
+        "y": 217.6,
+        "width": 322,
+        "height": 444.2
+      }
+    },
+    {
+      "id": "h-artha",
+      "file": "letra-h-artha.svg",
+      "bbox": {
+        "x": 1932.8,
+        "y": 154.6,
+        "width": 317.2,
+        "height": 449
+      }
+    },
+    {
+      "id": "a-artha-ultimo",
+      "file": "letra-a-artha-ultimo.svg",
+      "bbox": {
+        "x": 2218.9,
+        "y": 197.5,
+        "width": 323,
+        "height": 328.5
+      }
+    },
+    {
+      "id": "M-colado-no-artha",
+      "file": "letra-m-colado-no-artha.svg",
+      "bbox": {
+        "x": 354.1,
+        "y": 212.4,
+        "width": 1061.7,
+        "height": 1297.9
+      }
+    },
+    {
+      "id": "_-artha_s",
+      "file": "letra-artha-s.svg",
+      "bbox": {
+        "x": 2621,
+        "y": 22.6,
+        "width": 101.9,
+        "height": 163.6
+      }
+    },
+    {
+      "id": "i-intage-dot",
+      "file": "letra-i-intage-dot.svg",
+      "bbox": {
+        "x": 3776.8,
+        "y": 304.7,
+        "width": 85.3,
+        "height": 82
+      }
+    },
+    {
+      "id": "i-intage",
+      "file": "letra-i-intage.svg",
+      "bbox": {
+        "x": 3654.7,
+        "y": 422.3,
+        "width": 233.5,
+        "height": 316.9
+      }
+    },
+    {
+      "id": "n-intage",
+      "file": "letra-n-intage.svg",
+      "bbox": {
+        "x": 3810,
+        "y": 431.6,
+        "width": 385.7,
+        "height": 357.5
+      }
+    },
+    {
+      "id": "t-intage",
+      "file": "letra-t-intage.svg",
+      "bbox": {
+        "x": 4106.5,
+        "y": 356.6,
+        "width": 321.7,
+        "height": 482.8
+      }
+    },
+    {
+      "id": "a-intage",
+      "file": "letra-a-intage.svg",
+      "bbox": {
+        "x": 4266.1,
+        "y": 601.9,
+        "width": 432.1,
+        "height": 336.6
+      }
+    },
+    {
+      "id": "g-intage",
+      "file": "letra-g-intage.svg",
+      "bbox": {
+        "x": 4388.5,
+        "y": 737.6,
+        "width": 583.8,
+        "height": 573.9
+      }
+    },
+    {
+      "id": "e-intage",
+      "file": "letra-e-intage.svg",
+      "bbox": {
+        "x": 4862.8,
+        "y": 878.8,
+        "width": 334.8,
+        "height": 299.9
+      }
+    }
+  ]
+}

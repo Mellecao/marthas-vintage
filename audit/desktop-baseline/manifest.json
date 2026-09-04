@@ -1,0 +1,9 @@
+{
+  "src\\app\\page.tsx": "fbe8e72f0c22e168b681ba2e744077badd6624161b8dbf0b5d22bbe9caf07d5f",
+  "src\\app\\globals.css": "ed64263dbf1e73871c89ba0b2dd2eabf0048507522f1d6d4bec907f6c8033c95",
+  "src\\app\\layout.tsx": "0cb5422ffe8a47f825586faf42d6aa2ab51ce149a778fea853fa2fef69138fba",
+  "audit\\desktop-baseline\\mobile\\baseline-360.png": "266ada6f7fc77abe1b5a886d134397c3fb31283711b90b0f182283efab324826",
+  "audit\\desktop-baseline\\mobile\\baseline-390.png": "00460b5053a7edb3e14e66ed3e0ebf55d1e51837741965045ee2fb452a645001",
+  "audit\\desktop-baseline\\mobile\\baseline-402.png": "6a0056c42ba48333a24681f39a522231d1202ab08332e9ebdbca92ec54fc6118",
+  "audit\\desktop-baseline\\mobile\\baseline-430.png": "fdac1ba5da05b5153e9d79c0dce51a946baf2598ae5d8762bbf048345fc447c9"
+}

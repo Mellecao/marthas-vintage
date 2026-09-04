@@ -1,0 +1,132 @@
+{
+  "innerWidth": 402,
+  "clientWidth": 402,
+  "scrollWidth": 402,
+  "scrollHeight": 4370,
+  "boxes": [
+    {
+      "className": "hero-description",
+      "clientWidth": 319,
+      "scrollWidth": 319,
+      "clientHeight": 64,
+      "scrollHeight": 65,
+      "rect": {
+        "x": 69,
+        "y": 729.984375,
+        "width": 318.984375,
+        "height": 64
+      }
+    },
+    {
+      "className": "eyes-copy-large",
+      "clientWidth": 173,
+      "scrollWidth": 173,
+      "clientHeight": 272,
+      "scrollHeight": 273,
+      "rect": {
+        "x": 30,
+        "y": 1053.984375,
+        "width": 172.984375,
+        "height": 272
+      }
+    },
+    {
+      "className": "collection-copy",
+      "clientWidth": 379,
+      "scrollWidth": 379,
+      "clientHeight": 80,
+      "scrollHeight": 81,
+      "rect": {
+        "x": 12.984375,
+        "y": 2353.984375,
+        "width": 378.984375,
+        "height": 80
+      }
+    },
+    {
+      "className": "personal-copy-left",
+      "clientWidth": 109,
+      "scrollWidth": 109,
+      "clientHeight": 384,
+      "scrollHeight": 385,
+      "rect": {
+        "x": 23,
+        "y": 2664.984375,
+        "width": 108.984375,
+        "height": 384
+      }
+    },
+    {
+      "className": "personal-copy-narrow",
+      "clientWidth": 86,
+      "scrollWidth": 86,
+      "clientHeight": 224,
+      "scrollHeight": 225,
+      "rect": {
+        "x": 147,
+        "y": 3051.984375,
+        "width": 85.984375,
+        "height": 224
+      }
+    },
+    {
+      "className": "personal-copy-wide",
+      "clientWidth": 372,
+      "scrollWidth": 372,
+      "clientHeight": 144,
+      "scrollHeight": 145,
+      "rect": {
+        "x": 16,
+        "y": 3243.984375,
+        "width": 371.984375,
+        "height": 144
+      }
+    },
+    {
+      "className": "beyond-copy",
+      "clientWidth": 366,
+      "scrollWidth": 366,
+      "clientHeight": 96,
+      "scrollHeight": 97,
+      "rect": {
+        "x": 19.984375,
+        "y": 3977,
+        "width": 366,
+        "height": 96
+      }
+    }
+  ],
+  "frames": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 402,
+      "height": 874
+    },
+    {
+      "x": 0,
+      "y": 874,
+      "width": 402,
+      "height": 874
+    },
+    {
+      "x": 0,
+      "y": 1748,
+      "width": 402,
+      "height": 874
+    },
+    {
+      "x": 0,
+      "y": 2622,
+      "width": 402,
+      "height": 874
+    },
+    {
+      "x": 0,
+      "y": 3496,
+      "width": 402,
+      "height": 874
+    }
+  ],
+  "failedImages": []
+}
