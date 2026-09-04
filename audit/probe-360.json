@@ -1,0 +1,132 @@
+{
+  "innerWidth": 360,
+  "clientWidth": 360,
+  "scrollWidth": 360,
+  "scrollHeight": 3913,
+  "boxes": [
+    {
+      "className": "hero-description",
+      "clientWidth": 286,
+      "scrollWidth": 286,
+      "clientHeight": 57,
+      "scrollHeight": 58,
+      "rect": {
+        "x": 61.78125,
+        "y": 653.71875,
+        "width": 285.65625,
+        "height": 57.3125
+      }
+    },
+    {
+      "className": "eyes-copy-large",
+      "clientWidth": 155,
+      "scrollWidth": 155,
+      "clientHeight": 244,
+      "scrollHeight": 244,
+      "rect": {
+        "x": 26.859375,
+        "y": 943.859375,
+        "width": 154.921875,
+        "height": 243.578125
+      }
+    },
+    {
+      "className": "collection-copy",
+      "clientWidth": 339,
+      "scrollWidth": 339,
+      "clientHeight": 72,
+      "scrollHeight": 72,
+      "rect": {
+        "x": 11.640625,
+        "y": 2108.015625,
+        "width": 339.390625,
+        "height": 71.640625
+      }
+    },
+    {
+      "className": "personal-copy-left",
+      "clientWidth": 98,
+      "scrollWidth": 98,
+      "clientHeight": 344,
+      "scrollHeight": 345,
+      "rect": {
+        "x": 20.59375,
+        "y": 2386.515625,
+        "width": 97.609375,
+        "height": 343.875
+      }
+    },
+    {
+      "className": "personal-copy-narrow",
+      "clientWidth": 77,
+      "scrollWidth": 77,
+      "clientHeight": 201,
+      "scrollHeight": 201,
+      "rect": {
+        "x": 131.640625,
+        "y": 2733.078125,
+        "width": 77,
+        "height": 200.59375
+      }
+    },
+    {
+      "className": "personal-copy-wide",
+      "clientWidth": 333,
+      "scrollWidth": 333,
+      "clientHeight": 129,
+      "scrollHeight": 130,
+      "rect": {
+        "x": 14.328125,
+        "y": 2905.015625,
+        "width": 333.125,
+        "height": 128.953125
+      }
+    },
+    {
+      "className": "beyond-copy",
+      "clientWidth": 328,
+      "scrollWidth": 328,
+      "clientHeight": 86,
+      "scrollHeight": 87,
+      "rect": {
+        "x": 17.90625,
+        "y": 3561.421875,
+        "width": 327.75,
+        "height": 85.96875
+      }
+    }
+  ],
+  "frames": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 360,
+      "height": 782.671875
+    },
+    {
+      "x": 0,
+      "y": 782.671875,
+      "width": 360,
+      "height": 782.671875
+    },
+    {
+      "x": 0,
+      "y": 1565.34375,
+      "width": 360,
+      "height": 782.671875
+    },
+    {
+      "x": 0,
+      "y": 2348.015625,
+      "width": 360,
+      "height": 782.671875
+    },
+    {
+      "x": 0,
+      "y": 3130.6875,
+      "width": 360,
+      "height": 782.671875
+    }
+  ],
+  "failedImages": []
+}
