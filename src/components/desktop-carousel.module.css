@@ -1,0 +1,96 @@
+/* Desktop-only: this component is rendered exclusively inside the desktop
+   journal, which is display:none below 1024px, so no media query is needed. */
+.carousel {
+  --carousel-ink: #221a12;
+  --carousel-contrast: #f2e5cd;
+  --carousel-line: rgba(34, 26, 18, .3);
+  color: var(--carousel-ink);
+}
+.cream {
+  --carousel-ink: #f8efdd;
+  --carousel-contrast: #221a12;
+  --carousel-line: rgba(248, 239, 221, .42);
+}
+
+.track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: clamp(300px, 25vw, 420px);
+  column-gap: clamp(20px, 2vw, 34px);
+  padding: 0 clamp(40px, 5vw, 96px) 6px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: clamp(40px, 5vw, 96px);
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .track { scroll-behavior: auto; }
+}
+.track::-webkit-scrollbar { display: none; }
+.track:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+
+.track figure {
+  margin: 0;
+  scroll-snap-align: start;
+}
+
+.frame {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border: 7px solid currentColor;
+}
+.frame img { object-fit: cover; }
+
+.track figcaption {
+  display: flex;
+  gap: 12px;
+  margin-top: 14px;
+  font-size: 13px;
+  line-height: 1.45;
+  letter-spacing: .02em;
+}
+.track figcaption span {
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+  opacity: .6;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin: 28px clamp(40px, 5vw, 96px) 0;
+  padding-top: 20px;
+  border-top: 1px solid var(--carousel-line);
+}
+.counter {
+  margin: 0;
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .1em;
+}
+.counter strong { font-weight: 500; }
+
+.buttons { display: flex; gap: 12px; }
+.buttons button {
+  width: 58px;
+  height: 58px;
+  border: 1px solid var(--carousel-line);
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color .18s ease, color .18s ease, opacity .18s ease;
+}
+.buttons button:hover:not(:disabled) {
+  background: var(--carousel-ink);
+  color: var(--carousel-contrast);
+}
+.buttons button:disabled { opacity: .28; cursor: default; }
+.buttons button:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
