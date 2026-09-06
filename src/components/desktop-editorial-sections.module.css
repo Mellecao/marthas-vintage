@@ -25,7 +25,10 @@
 
   .eyebrow { display: block; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
 
-  /* Shared centered header, used by all three content sections */
+  /* Shared centered header, used by all three content sections.
+     max-width shrinks below 720px only when needed to stay clear of the
+     corner .stamp badge: 96px is .stamp's own width, clamp(24px,5vw,80px)
+     is its inset, +24px is a buffer gap — same numbers as .stamp below. */
   .sectionHeader { max-width: min(720px, calc(100% - 2 * (96px + clamp(24px, 5vw, 80px) + 24px))); margin: 0 auto; padding: 96px 24px 56px; text-align: center; }
   .sectionHeader .eyebrow { margin-bottom: 18px; }
   .sectionHeading { font-family: var(--font-suravaram), Georgia, serif; font-size: clamp(48px, 5.2vw, 76px); line-height: 1.02; letter-spacing: -.03em; }
