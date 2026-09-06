@@ -26,7 +26,7 @@
   .eyebrow { display: block; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
 
   /* Shared centered header, used by all three content sections */
-  .sectionHeader { max-width: 720px; margin: 0 auto; padding: 96px 24px 56px; text-align: center; }
+  .sectionHeader { max-width: min(720px, calc(100% - 2 * (96px + clamp(24px, 5vw, 80px) + 24px))); margin: 0 auto; padding: 96px 24px 56px; text-align: center; }
   .sectionHeader .eyebrow { margin-bottom: 18px; }
   .sectionHeading { font-family: var(--font-suravaram), Georgia, serif; font-size: clamp(48px, 5.2vw, 76px); line-height: 1.02; letter-spacing: -.03em; }
   .sectionNote { max-width: 46ch; margin: 20px auto 0; font-size: 15px; line-height: 1.6; }
