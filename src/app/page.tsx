@@ -2,6 +2,7 @@
 
 import { DesktopHomeHero } from "@/components/desktop-home-hero";
 import { DesktopEditorialSections } from "@/components/desktop-editorial-sections";
+import { PhotoCarousel, RotatingBadge, ScrollRoadline, SlowMarquee } from "@/components/vintage-details";
 
 const institutionalCopy =
   "Martha's Vintage is a personal collection of clothing, textiles, accessories and beautiful oddities, each chosen for its color, craftsmanship and unmistakable personality.";
@@ -145,6 +146,7 @@ function EyesFrame() {
       <span className="eyes-rule eyes-rule-two" aria-hidden="true" />
 
       <p className="eyes-copy-large">{eyesCopy}</p>
+      <PhotoCarousel group="store" className="mobile-store-carousel" />
 
       <LayeredImage
         className="store-portrait"
@@ -187,6 +189,7 @@ function CollectionFrame() {
   return (
     <section className="design-frame collection-frame" aria-label="The collection">
       <PaperTexture />
+      <PhotoCarousel group="collection" className="mobile-collection-carousel" />
       <figure
         className="collection-photo"
         aria-label="Two mannequins displaying vintage eveningwear"
@@ -225,13 +228,7 @@ function CollectionFrame() {
       </h2>
       <p className="collection-copy">{storyCopy}</p>
 
-      <div className="marquee" aria-label="Curated, not accumulated">
-        <div>
-          <span>Curated, not accumulated</span>
-          <b aria-hidden="true">•</b>
-          <span>Curated, not accumulated</span>
-        </div>
-      </div>
+      <div className="marquee"><SlowMarquee /></div>
 
       <h2 className="personal-lockup">
         <img src="/assets/site/personalstyle2.svg" alt="Personal style" />
@@ -252,6 +249,7 @@ function PersonalFrame() {
         Bastrop / Texas - 1997
       </p>
       <p className="personal-copy-left">{personalIntro}</p>
+      <PhotoCarousel group="personal" className="mobile-personal-carousel" />
       <VintageImage
         className="personal-main"
         src="/assets/site/personal-main.png"
@@ -292,6 +290,7 @@ function BeyondFrame() {
   return (
     <section id="beyond" className="design-frame beyond-frame" aria-labelledby="beyond-title">
       <PaperTexture />
+      <PhotoCarousel group="beyond" className="mobile-beyond-carousel" />
       <VintageImage
         className="beyond-room"
         src="/assets/site/beyond-room.jpeg"
@@ -360,11 +359,15 @@ export default function Home() {
       <DesktopEditorialSections />
       <div className="legacy-content">
         <HeroFrame />
+        <div className="legacy-below-hero">
+        <ScrollRoadline />
         <EyesFrame />
         <CollectionFrame />
         <PersonalFrame />
         <BeyondFrame />
+        <div className="mobile-badge"><RotatingBadge /></div>
         <VisitFooter />
+        </div>
       </div>
     </main>
   );

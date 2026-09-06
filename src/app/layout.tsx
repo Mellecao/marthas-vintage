@@ -7,6 +7,7 @@ import {
 } from "next/font/google";
 import { LogoLoader } from "@/components/logo-loader";
 import "./globals.css";
+import "./vintage-details.css";
 
 const geist = Geist({
   variable: "--font-geist-sans",

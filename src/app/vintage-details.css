@@ -1,0 +1,52 @@
+/* Shared material, quiet motion, and touch-first photo sequences. */
+body { background:linear-gradient(#f5eddf99,#f5eddf99),url('/assets/site/paper.jpg') center top / 1100px auto repeat; }
+.site-shell { background:linear-gradient(#f5eddf99,#f5eddf99),url('/assets/site/paper.jpg') center top / 1100px auto repeat; }
+.legacy-below-hero { position:relative; }
+.scroll-roadline { position:absolute; right:0; top:40px; width:100%; height:calc(100% - 100px); pointer-events:none; z-index:35; overflow:hidden; color:#784b42; }
+.scroll-roadline svg { width:100%; height:100%; overflow:hidden; }
+.rotating-badge { position:relative; width:120px; height:120px; flex:0 0 120px; color:#723e3c; }
+.badge-lettering { width:100%; height:100%; animation:badge-orbit 36s linear infinite; overflow:visible; }
+.badge-lettering text { fill:currentColor; font:9px var(--font-geist-sans),sans-serif; letter-spacing:1.65px; }
+.rotating-badge>img { position:absolute; width:43px; height:30px; left:50%; top:50%; transform:translate(-50%,-50%); object-fit:contain; }
+@keyframes badge-orbit { to { transform:rotate(360deg); } }
+.slow-marquee { width:100%; overflow:hidden; padding:17px 0; border-top:1px solid #b8a58f; border-bottom:1px solid #b8a58f; color:#723e3c; font:30px/1.3 var(--font-suravaram),Georgia,serif; }
+.slow-marquee-track { display:flex; width:max-content; animation:marquee-drift 80s linear infinite; }
+.slow-marquee-group { display:flex; flex:none; }
+.slow-marquee-group span { display:flex; align-items:center; gap:48px; padding-right:48px; white-space:nowrap; }
+.slow-marquee i { font:18px Georgia,serif; }
+@keyframes marquee-drift { to { transform:translateX(-50%); } }
+.photo-carousel { display:none; }
+.mobile-badge { display:flex; justify-content:center; padding:22px 0 32px; }
+@media(min-width:1024px) {
+  .persistent-hero-menu { position:fixed; inset:0 0 auto; width:100vw; height:100dvh; z-index:90; pointer-events:none; }
+  .persistent-hero-menu::before { content:''; position:absolute; inset:0 0 auto; height:12.5%; background:var(--paper) url('/assets/site/paper.jpg') center top / 1100px auto repeat; box-shadow:0 1px 0 #78604c25; }
+  .persistent-hero-menu[hidden] { display:none; }
+}
+@media(max-width:767px) {
+  /* Only the former brown card changes; the photograph and logo remain. */
+  .hero-card { background:transparent; overflow:visible; }
+  .hero-card-texture,.hero-rule { display:none; }
+  .hero-title,.hero-description { color:var(--ink); }
+  .hero-card { margin-left:8.209cqw; width:83cqw; }
+  .hero-title { left:0; top:12.5cqw; font-size:5.5cqw; }
+  .hero-description { left:0; top:20cqw; width:83cqw; }
+  .photo-carousel { display:block; position:absolute; z-index:31; overflow:hidden; }
+  .photo-carousel-track { position:relative; display:flex; width:100%; height:calc(100% - 32px); overflow-x:auto; overflow-y:hidden; scroll-snap-type:x mandatory; scrollbar-width:none; overscroll-behavior-x:contain; }
+  .photo-carousel-track::-webkit-scrollbar { display:none; }
+  .photo-carousel-track:focus-visible { outline:2px solid #723e3c; outline-offset:-3px; }
+  .photo-carousel-track figure { position:relative; flex:0 0 100%; height:100%; scroll-snap-align:start; margin:0; }
+  .photo-carousel-track img { display:block; width:100%; height:100%; object-fit:cover; object-position:center; }
+  .carousel-controls { height:32px; display:flex; align-items:center; justify-content:space-between; background:var(--paper) url('/assets/site/paper.jpg') center / 800px auto; font:10px var(--font-geist-sans),sans-serif; letter-spacing:.1em; }
+  .carousel-controls button { min-width:44px; height:32px; padding:0 12px; border:0; background:transparent; font-size:20px; cursor:pointer; }
+  .carousel-controls button:disabled { opacity:.25; cursor:default; }
+  .carousel-controls button:focus-visible { outline:2px solid #723e3c; outline-offset:-2px; }
+  .mobile-store-carousel { left:6.4677cqw; top:127.3632cqw; width:87.3134cqw; height:71.393cqw; }
+  .store-landscape,.collection-photo,.personal-main,.beyond-room { display:none; }
+  .mobile-collection-carousel { left:0; top:0; width:100%; height:132.5871cqw; }
+  .mobile-personal-carousel { left:35.8209cqw; top:10.6965cqw; width:59.4527cqw; height:79.1045cqw; }
+  .mobile-beyond-carousel { left:4.7264cqw; top:3.9801cqw; width:90.5473cqw; height:97.7612cqw; }
+}
+.marquee>.slow-marquee { position:relative; inset:auto; display:block; padding:0; height:100%; border:0; font-size:4.4776cqw; line-height:7.4627cqw; }
+.marquee .slow-marquee-group span { gap:24px; padding-right:24px; }
+@media(min-width:768px) and (max-width:1023px) { .mobile-badge { display:none; } }
+@media(prefers-reduced-motion:reduce) { .badge-lettering,.slow-marquee-track { animation:none; } .scroll-roadline { display:none; } }

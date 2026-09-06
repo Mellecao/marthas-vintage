@@ -59,6 +59,30 @@ export function DesktopHomeHero() {
             return;
           }
 
+          // Keep the very same hero navigation and lettering after pin release.
+          // Nothing is duplicated or crossfaded into a different menu.
+          const nav = element.querySelector<HTMLElement>(".desktop-home-nav");
+          const persistent = document.createElement("div");
+          persistent.className = "persistent-hero-menu";
+          persistent.hidden = true;
+          document.body.appendChild(persistent);
+          const originals = [marthas, vintage, ...(nav ? [nav] : [])].map(node => ({
+            node, parent: node.parentNode!, next: node.nextSibling,
+          }));
+          let moved = false;
+          const handoff = (active: boolean) => {
+            if (active === moved) return;
+            moved = active;
+            if (active) {
+              persistent.hidden = false;
+              originals.forEach(({node}) => persistent.appendChild(node));
+            } else {
+              originals.slice().reverse().forEach(({node, parent, next}) => parent.insertBefore(node, next?.parentNode === parent ? next : null));
+              persistent.hidden = true;
+            }
+          };
+          const disposeMenu = () => { handoff(false); persistent.remove(); };
+
           const finalState = () => {
             gsap.set(marthas, { left: "37.109375%", top: "3.25%", width: "12.4%", height: "7.35%" });
             gsap.set(vintage, { left: "49.859375%", top: "3.25%", width: "12.8%", height: "7.35%" });
@@ -74,7 +98,11 @@ export function DesktopHomeHero() {
 
           if (conditions.reduce) {
             finalState();
-            return;
+            const menuTrigger = ScrollTrigger.create({
+              trigger: element, start: "bottom top", end: "max",
+              onToggle: self => handoff(self.isActive),
+            });
+            return () => { menuTrigger.kill(); disposeMenu(); };
           }
 
           const timeline = gsap.timeline({
@@ -133,7 +161,13 @@ export function DesktopHomeHero() {
             }, 0.42)
             .to({}, { duration: 0.18 });
 
-          return () => timeline.kill();
+          const menuTrigger = ScrollTrigger.create({
+            start: () => timeline.scrollTrigger!.end,
+            end: "max",
+            onUpdate: self => handoff(self.scroll() >= self.start),
+            onRefresh: self => handoff(self.scroll() >= self.start),
+          });
+          return () => { menuTrigger.kill(); disposeMenu(); timeline.kill(); };
         },
       );
 
