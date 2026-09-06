@@ -1,0 +1,212 @@
+"use client";
+
+import { useLayoutEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+const MARTHAS_LOGO = "/assets/site/desktop-home/marthas-word.svg";
+const VINTAGE_LOGO = "/assets/site/desktop-home/vintage-word.svg";
+const MODEL = "/assets/site/desktop-home/hero-models.png";
+const BUTTERFLY = "/assets/logo/logo-partes/butterfly-middleleft.svg";
+
+const navItems = [
+  { className: "desktop-nav-home", href: "#desktop-home", label: "Home" },
+  { className: "desktop-nav-beyond", href: "#desktop-beyond", label: "Beyond the wardrobe" },
+  { className: "desktop-nav-eyes", href: "#desktop-marthas-eyes", label: "The martha’s eyes" },
+  { className: "desktop-nav-contact", href: "#desktop-contact", label: "Contact" },
+];
+
+export function DesktopHomeHero() {
+  const root = useRef<HTMLElement>(null);
+
+  useLayoutEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    const element = root.current;
+    if (!element) return;
+
+    const context = gsap.context(() => {
+      const media = gsap.matchMedia();
+
+      media.add(
+        {
+          desktop: "(min-width: 1024px)",
+          reduce: "(prefers-reduced-motion: reduce)",
+        },
+        (matchContext) => {
+          const conditions = matchContext.conditions as {
+            desktop: boolean;
+            reduce: boolean;
+          };
+          if (!conditions.desktop) return;
+
+          const marthas = element.querySelector<HTMLElement>("[data-brand-marthas]");
+          const vintage = element.querySelector<HTMLElement>("[data-brand-vintage]");
+          const description = element.querySelector<HTMLElement>("[data-desktop-description]");
+          const butterfly = element.querySelector<HTMLElement>("[data-desktop-butterfly]");
+          const butterflyWings = Array.from(
+            element.querySelectorAll<HTMLElement>("[data-desktop-butterfly-wing]"),
+          );
+          const photo = element.querySelector<HTMLElement>("[data-desktop-photo]");
+          const discover = element.querySelector<HTMLElement>("[data-desktop-discover]");
+          const links = Array.from(
+            element.querySelectorAll<HTMLElement>("[data-desktop-nav-link]"),
+          );
+          const leaders = Array.from(
+            element.querySelectorAll<HTMLElement>("[data-desktop-nav-leader]"),
+          );
+
+          if (!marthas || !vintage || !description || !butterfly || !photo || !discover) {
+            return;
+          }
+
+          const finalState = () => {
+            gsap.set(marthas, { left: "37.109375%", top: "3.25%", width: "12.4%", height: "7.35%" });
+            gsap.set(vintage, { left: "49.859375%", top: "3.25%", width: "12.8%", height: "7.35%" });
+            gsap.set(links[0], { left: "6.328125%", top: "5.2%" });
+            gsap.set(links[1], { left: "15.3125%", top: "5.2%" });
+            gsap.set(links[2], { left: "66.171875%", top: "5.2%" });
+            gsap.set(links[3], { left: "84.609375%", top: "5.2%" });
+            gsap.set(leaders, { autoAlpha: 0, scaleX: 0 });
+            gsap.set(description, { autoAlpha: 0, y: 44 });
+            gsap.set(butterfly, { autoAlpha: 0, x: "24vw", y: "-28vh", rotation: 28, scale: 0.72 });
+            gsap.set(photo, { left: 0, width: "100%" });
+          };
+
+          if (conditions.reduce) {
+            finalState();
+            return;
+          }
+
+          const timeline = gsap.timeline({
+            defaults: { ease: "none" },
+            scrollTrigger: {
+              trigger: element,
+              start: "top top",
+              end: () => `+=${window.innerHeight * 1.55}`,
+              scrub: 0.35,
+              pin: true,
+              anticipatePin: 1,
+              invalidateOnRefresh: true,
+            },
+          });
+
+          timeline
+            .to(marthas, {
+              left: "37.109375%",
+              top: "3.25%",
+              width: "12.4%",
+              height: "7.35%",
+              duration: 0.42,
+            }, 0)
+            .to(vintage, {
+              left: "49.859375%",
+              top: "3.25%",
+              width: "12.8%",
+              height: "7.35%",
+              duration: 0.42,
+            }, 0)
+            .to(links[0], { left: "6.328125%", top: "5.2%", duration: 0.42 }, 0)
+            .to(links[1], { left: "15.3125%", top: "5.2%", duration: 0.42 }, 0)
+            .to(links[2], { left: "66.171875%", top: "5.2%", duration: 0.42 }, 0)
+            .to(links[3], { left: "84.609375%", top: "5.2%", duration: 0.42 }, 0)
+            .to(leaders, { autoAlpha: 0, scaleX: 0, duration: 0.25 }, 0)
+            .to(description, { autoAlpha: 0, y: 44, duration: 0.27 }, 0.03)
+            .to(butterfly, {
+              autoAlpha: 0,
+              x: "24vw",
+              y: "-28vh",
+              rotation: 28,
+              scale: 0.72,
+              duration: 0.34,
+            }, 0.03)
+            .to(butterflyWings, {
+              scaleX: 0.32,
+              duration: 0.055,
+              ease: "sine.inOut",
+              yoyo: true,
+              repeat: 5,
+            }, 0.03)
+            .to(photo, {
+              left: 0,
+              width: "100%",
+              duration: 0.58,
+            }, 0.42)
+            .to({}, { duration: 0.18 });
+
+          return () => timeline.kill();
+        },
+      );
+
+      return () => media.revert();
+    }, element);
+
+    return () => context.revert();
+  }, []);
+
+  return (
+    <section ref={root} id="desktop-home" className="desktop-home" aria-labelledby="desktop-home-title">
+      <span className="desktop-paper-texture" aria-hidden="true" />
+      <span className="desktop-grunge-texture" aria-hidden="true" />
+
+      <h1 id="desktop-home-title" className="sr-only">Martha&apos;s Vintage</h1>
+
+      <img
+        data-brand-marthas
+        className="desktop-brand desktop-brand-marthas"
+        src={MARTHAS_LOGO}
+        alt=""
+        aria-hidden="true"
+      />
+      <img
+        data-brand-vintage
+        className="desktop-brand desktop-brand-vintage"
+        src={VINTAGE_LOGO}
+        alt=""
+        aria-hidden="true"
+      />
+
+      <nav className="desktop-home-nav" aria-label="Primary navigation">
+        {navItems.map((item) => (
+          <a
+            key={item.label}
+            className={`desktop-nav-link ${item.className}`}
+            data-desktop-nav-link
+            href={item.href}
+          >
+            <span>{item.label}</span>
+            <span className="desktop-nav-leader" data-desktop-nav-leader aria-hidden="true">
+              {"• ".repeat(24)}
+            </span>
+          </a>
+        ))}
+      </nav>
+
+      <p className="desktop-home-description" data-desktop-description>
+        Martha&apos;s Vintage is a personal collection of clothing, textiles and beautiful oddities,
+        each chosen for its color, craftsmanship and unmistakable personality.
+      </p>
+
+      <div className="desktop-home-photo" data-desktop-photo>
+        <img src={MODEL} alt="Three women wearing distinctive vintage looks" />
+        <span className="desktop-photo-paper" aria-hidden="true" />
+      </div>
+
+      <span
+        className="desktop-home-butterfly"
+        data-desktop-butterfly
+        aria-hidden="true"
+      >
+        <span className="desktop-butterfly-wing desktop-butterfly-wing-left" data-desktop-butterfly-wing>
+          <img src={BUTTERFLY} alt="" />
+        </span>
+        <span className="desktop-butterfly-wing desktop-butterfly-wing-right" data-desktop-butterfly-wing>
+          <img src={BUTTERFLY} alt="" />
+        </span>
+      </span>
+
+      <a className="desktop-discover" data-desktop-discover href="#desktop-marthas-eyes">
+        Discover the story <span aria-hidden="true">↓</span>
+      </a>
+    </section>
+  );
+}

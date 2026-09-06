@@ -10,12 +10,20 @@ const PLAYBACK_RATE = 1.75;
 /** The last butterfly settles here — the video's remaining hold is dead time. */
 const LAST_FRAME = 200;
 const FADE_MS = 600;
+/** Never leave older or memory-constrained browsers behind the cream overlay. */
+const FAILSAFE_MS = 10_000;
 
 const REDUCED = "(prefers-reduced-motion: reduce)";
 const subscribeMotion = (onChange: () => void) => {
   const query = window.matchMedia(REDUCED);
-  query.addEventListener("change", onChange);
-  return () => query.removeEventListener("change", onChange);
+  if (typeof query.addEventListener === "function") {
+    query.addEventListener("change", onChange);
+    return () => query.removeEventListener("change", onChange);
+  }
+
+  // Safari before 14 exposes only the legacy MediaQueryList listener API.
+  query.addListener(onChange);
+  return () => query.removeListener(onChange);
 };
 
 export function LogoLoader() {
@@ -29,8 +37,14 @@ export function LogoLoader() {
   // the Player itself only mounts in the browser.
   const [ready, setReady] = useState(false);
   const [ended, setEnded] = useState(false);
+  const [timedOut, setTimedOut] = useState(false);
   const [gone, setGone] = useState(false);
-  const finished = ended || prefersReduced;
+  const finished = ended || prefersReduced || timedOut;
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setTimedOut(true), FAILSAFE_MS);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     if (prefersReduced) return;

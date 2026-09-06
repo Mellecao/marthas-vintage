@@ -1,5 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 
+import { DesktopHomeHero } from "@/components/desktop-home-hero";
+import { DesktopEditorialSections } from "@/components/desktop-editorial-sections";
+
 const institutionalCopy =
   "Martha's Vintage is a personal collection of clothing, textiles, accessories and beautiful oddities, each chosen for its color, craftsmanship and unmistakable personality.";
 
@@ -287,7 +290,7 @@ function PersonalFrame() {
 
 function BeyondFrame() {
   return (
-    <section className="design-frame beyond-frame" aria-labelledby="beyond-title">
+    <section id="beyond" className="design-frame beyond-frame" aria-labelledby="beyond-title">
       <PaperTexture />
       <VintageImage
         className="beyond-room"
@@ -353,12 +356,16 @@ function VisitFooter() {
 export default function Home() {
   return (
     <main className="site-shell">
-      <HeroFrame />
-      <EyesFrame />
-      <CollectionFrame />
-      <PersonalFrame />
-      <BeyondFrame />
-      <VisitFooter />
+      <DesktopHomeHero />
+      <DesktopEditorialSections />
+      <div className="legacy-content">
+        <HeroFrame />
+        <EyesFrame />
+        <CollectionFrame />
+        <PersonalFrame />
+        <BeyondFrame />
+        <VisitFooter />
+      </div>
     </main>
   );
 }
