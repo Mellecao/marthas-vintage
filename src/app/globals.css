@@ -39,6 +39,17 @@ button, a { color: inherit; }
 button { font: inherit; }
 p, h1, h2, figure { margin: 0; }
 
+/* Last-resort exit that does not depend on React, Remotion, or an `ended`
+   event. If hydration or iOS rendering stalls, the server-rendered cream layer
+   becomes non-blocking on its own. Normal completion removes it much sooner. */
+@keyframes logo-loader-failsafe {
+  0%, 99.9% { visibility: visible; pointer-events: auto; }
+  100% { visibility: hidden; pointer-events: none; }
+}
+[data-logo-loader] {
+  animation: logo-loader-failsafe 9s linear forwards;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -120,7 +131,8 @@ p, h1, h2, figure { margin: 0; }
     z-index: 60;
     display: block;
     overflow: hidden;
-    object-fit: fill;
+    object-fit: contain;
+    object-position: 50% 50%;
   }
   .desktop-brand-marthas {
     left: 3.046875%;

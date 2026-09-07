@@ -70,6 +70,12 @@ export function DesktopHomeHero() {
             node, parent: node.parentNode!, next: node.nextSibling,
           }));
           let moved = false;
+          let lastMenuScroll = window.scrollY;
+          const setMenuCollapsed = (collapsed: boolean) => {
+            persistent.classList.toggle("is-collapsed", collapsed);
+            // Off-screen links must not remain keyboard/pointer targets.
+            persistent.inert = collapsed;
+          };
           const handoff = (active: boolean) => {
             if (active === moved) return;
             moved = active;
@@ -79,13 +85,23 @@ export function DesktopHomeHero() {
             } else {
               originals.slice().reverse().forEach(({node, parent, next}) => parent.insertBefore(node, next?.parentNode === parent ? next : null));
               persistent.hidden = true;
+              setMenuCollapsed(false);
             }
+          };
+          const updateMenu = (self: ScrollTrigger, refreshed = false) => {
+            const scroll = self.scroll();
+            handoff(scroll >= self.start);
+            // Refresh/idle never closes a menu revealed by an upward gesture.
+            if (moved && !refreshed && Math.abs(scroll - lastMenuScroll) > 1) {
+              setMenuCollapsed(scroll > lastMenuScroll);
+            }
+            lastMenuScroll = scroll;
           };
           const disposeMenu = () => { handoff(false); persistent.remove(); };
 
           const finalState = () => {
-            gsap.set(marthas, { left: "37.109375%", top: "3.25%", width: "12.4%", height: "7.35%" });
-            gsap.set(vintage, { left: "49.859375%", top: "3.25%", width: "12.8%", height: "7.35%" });
+            gsap.set(marthas, { left: "37.109375%", top: "3.25%", width: "12.4%", height: "7.35%", objectPosition: "100% 50%" });
+            gsap.set(vintage, { left: "49.859375%", top: "3.25%", width: "12.8%", height: "7.35%", objectPosition: "0% 50%" });
             gsap.set(links[0], { left: "6.328125%", top: "5.2%" });
             gsap.set(links[1], { left: "15.3125%", top: "5.2%" });
             gsap.set(links[2], { left: "66.171875%", top: "5.2%" });
@@ -93,14 +109,15 @@ export function DesktopHomeHero() {
             gsap.set(leaders, { autoAlpha: 0, scaleX: 0 });
             gsap.set(description, { autoAlpha: 0, y: 44 });
             gsap.set(butterfly, { autoAlpha: 0, x: "24vw", y: "-28vh", rotation: 28, scale: 0.72 });
-            gsap.set(photo, { left: 0, width: "100%" });
+            gsap.set(photo, { left: "0%", width: "100%" });
           };
 
           if (conditions.reduce) {
             finalState();
             const menuTrigger = ScrollTrigger.create({
               trigger: element, start: "bottom top", end: "max",
-              onToggle: self => handoff(self.isActive),
+              onUpdate: self => updateMenu(self),
+              onRefresh: self => updateMenu(self, true),
             });
             return () => { menuTrigger.kill(); disposeMenu(); };
           }
@@ -124,6 +141,7 @@ export function DesktopHomeHero() {
               top: "3.25%",
               width: "12.4%",
               height: "7.35%",
+              objectPosition: "100% 50%",
               duration: 0.42,
             }, 0)
             .to(vintage, {
@@ -131,6 +149,7 @@ export function DesktopHomeHero() {
               top: "3.25%",
               width: "12.8%",
               height: "7.35%",
+              objectPosition: "0% 50%",
               duration: 0.42,
             }, 0)
             .to(links[0], { left: "6.328125%", top: "5.2%", duration: 0.42 }, 0)
@@ -154,9 +173,13 @@ export function DesktopHomeHero() {
               yoyo: true,
               repeat: 5,
             }, 0.03)
-            .to(photo, {
-              left: 0,
+            // Explicit percentage start/end values survive refresh at any progress.
+            // A numeric zero made GSAP cache the photo's initial left in pixels,
+            // leaving it detached from the percentage-positioned butterfly on resize.
+            .fromTo(photo, { left: "34.0625%", width: "30.234375%" }, {
+              left: "0%",
               width: "100%",
+              immediateRender: false,
               duration: 0.58,
             }, 0.42)
             .to({}, { duration: 0.18 });
@@ -164,8 +187,8 @@ export function DesktopHomeHero() {
           const menuTrigger = ScrollTrigger.create({
             start: () => timeline.scrollTrigger!.end,
             end: "max",
-            onUpdate: self => handoff(self.scroll() >= self.start),
-            onRefresh: self => handoff(self.scroll() >= self.start),
+            onUpdate: self => updateMenu(self),
+            onRefresh: self => updateMenu(self, true),
           });
           return () => { menuTrigger.kill(); disposeMenu(); timeline.kill(); };
         },

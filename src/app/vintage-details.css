@@ -18,18 +18,47 @@ body { background:linear-gradient(#f5eddf99,#f5eddf99),url('/assets/site/paper.j
 .photo-carousel { display:none; }
 .mobile-badge { display:flex; justify-content:center; padding:22px 0 32px; }
 @media(min-width:1024px) {
-  .persistent-hero-menu { position:fixed; inset:0 0 auto; width:100vw; height:100dvh; z-index:90; pointer-events:none; }
+  /* The viewport-sized coordinate plane preserves the original morph geometry.
+     Only its top 12.5dvh is painted; slide that whole band out, including shadow. */
+  .persistent-hero-menu { position:fixed; inset:0 0 auto; width:100vw; height:100dvh; z-index:90; pointer-events:none; transform:translateY(0); transition:transform .28s ease; }
+  .persistent-hero-menu.is-collapsed { transform:translateY(calc(-12.5dvh - 2px)); }
+  .persistent-hero-menu.is-collapsed .desktop-nav-link { pointer-events:none; }
+  @media(prefers-reduced-motion:reduce) { .persistent-hero-menu { transition:none; } }
   .persistent-hero-menu::before { content:''; position:absolute; inset:0 0 auto; height:12.5%; background:var(--paper) url('/assets/site/paper.jpg') center top / 1100px auto repeat; box-shadow:0 1px 0 #78604c25; }
   .persistent-hero-menu[hidden] { display:none; }
 }
 @media(max-width:767px) {
-  /* Only the former brown card changes; the photograph and logo remain. */
-  .hero-card { background:transparent; overflow:visible; }
+  /* A photograph and its caption on the same sheet, not a separate card.
+     In-flow copy reserves its own space before the photograph can grow. */
+  .hero-frame { min-height:174cqw; }
+  .hero-stage { flex:1 1 105cqw; min-height:62cqw; max-height:116cqw; }
+  .hero-photo { left:8.2cqw; width:83.6cqw; }
+  .hero-photo > img { object-position:50% 0%; }
+  .hero-card {
+    flex:0 0 auto;
+    margin:5cqw 8.2cqw 0;
+    width:83.6cqw;
+    background:transparent;
+    overflow:visible;
+  }
   .hero-card-texture,.hero-rule { display:none; }
-  .hero-title,.hero-description { color:var(--ink); }
-  .hero-card { margin-left:8.209cqw; width:83cqw; }
-  .hero-title { left:0; top:12.5cqw; font-size:5.5cqw; }
-  .hero-description { left:0; top:20cqw; width:83cqw; }
+  .hero-title,.hero-description { position:relative; inset:auto; color:var(--ink); }
+  .hero-title {
+    font-family:var(--font-poltawski),Georgia,serif;
+    font-size:8cqw;
+    line-height:1.1;
+    letter-spacing:-.035em;
+  }
+  .hero-description {
+    margin-top:2.5cqw;
+    width:100%;
+    font-size:4.05cqw;
+    line-height:1.4;
+    text-wrap:pretty;
+  }
+  .hero-space-card { flex:2 1 5cqw; min-height:4cqw; }
+  .discover-link { font-size:3.65cqw; line-height:1.4; }
+  .discover-link span { font-size:4.2cqw; }
   .photo-carousel { display:block; position:absolute; z-index:31; overflow:hidden; }
   .photo-carousel-track { position:relative; display:flex; width:100%; height:calc(100% - 32px); overflow-x:auto; overflow-y:hidden; scroll-snap-type:x mandatory; scrollbar-width:none; overscroll-behavior-x:contain; }
   .photo-carousel-track::-webkit-scrollbar { display:none; }

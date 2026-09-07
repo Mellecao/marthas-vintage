@@ -1,17 +1,12 @@
 "use client";
 
-import { Player, type PlayerRef } from "@remotion/player";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { CREAM, MarthasLogo } from "@/remotion/MarthasLogo";
-import { LAYERS } from "@/remotion/layers";
 
-/** The intro is authored for video; on the web it reads better a bit brisker. */
-const PLAYBACK_RATE = 1.75;
-/** The last butterfly settles here — the video's remaining hold is dead time. */
-const LAST_FRAME = 200;
+const CREAM = "#f6efe2";
+const VIDEO_SRC = "/assets/site/marthas-loader.mp4";
 const FADE_MS = 600;
-/** Never leave older or memory-constrained browsers behind the cream overlay. */
-const FAILSAFE_MS = 10_000;
+/** Longer than the 3.8s video plus allowance for a slow connection. */
+const FAILSAFE_MS = 7_000;
 
 const REDUCED = "(prefers-reduced-motion: reduce)";
 const subscribeMotion = (onChange: () => void) => {
@@ -27,15 +22,12 @@ const subscribeMotion = (onChange: () => void) => {
 };
 
 export function LogoLoader() {
-  const player = useRef<PlayerRef>(null);
+  const video = useRef<HTMLVideoElement>(null);
   const prefersReduced = useSyncExternalStore(
     subscribeMotion,
     () => window.matchMedia(REDUCED).matches,
     () => false,
   );
-  // The cream overlay is server-rendered so there is no flash of the page, but
-  // the Player itself only mounts in the browser.
-  const [ready, setReady] = useState(false);
   const [ended, setEnded] = useState(false);
   const [timedOut, setTimedOut] = useState(false);
   const [gone, setGone] = useState(false);
@@ -47,34 +39,21 @@ export function LogoLoader() {
   }, []);
 
   useEffect(() => {
-    if (prefersReduced) return;
-    let live = true;
-    // Every part has to be decoded before playback, or the first second of the
-    // intro plays against an empty screen while the SVGs are still arriving.
-    Promise.all(
-      LAYERS.map(
-        (layer) =>
-          new Promise<void>((resolve) => {
-            const img = new Image();
-            img.onload = img.onerror = () => resolve();
-            img.src = layer.src;
-          }),
-      ),
-    ).then(() => {
-      if (live) setReady(true);
-    });
-    return () => {
-      live = false;
-    };
-  }, [prefersReduced]);
+    const element = video.current;
+    if (!element || prefersReduced) return;
 
-  useEffect(() => {
-    const instance = player.current;
-    if (!instance) return;
-    const finish = () => setEnded(true);
-    instance.addEventListener("ended", finish);
-    return () => instance.removeEventListener("ended", finish);
-  }, [ready]);
+    // iOS requires the property as well as the JSX attribute to consider
+    // programmatic playback eligible for muted autoplay.
+    element.muted = true;
+    const play = () => {
+      void element.play().catch(() => {
+        // The failsafe still releases the page if a browser blocks playback.
+      });
+    };
+    play();
+    element.addEventListener("canplay", play, { once: true });
+    return () => element.removeEventListener("canplay", play);
+  }, [prefersReduced]);
 
   useEffect(() => {
     if (!finished) return;
@@ -109,22 +88,24 @@ export function LogoLoader() {
         pointerEvents: finished ? "none" : "auto",
       }}
     >
-      {ready ? (
-        <Player
-          ref={player}
-          component={MarthasLogo}
-          durationInFrames={LAST_FRAME}
-          fps={30}
-          compositionWidth={1206}
-          compositionHeight={2622}
-          playbackRate={PLAYBACK_RATE}
+      {!prefersReduced ? (
+        <video
+          ref={video}
+          data-logo-loader-video=""
+          src={VIDEO_SRC}
+          muted
           autoPlay
-          loop={false}
-          controls={false}
-          clickToPlay={false}
-          doubleClickToFullscreen={false}
-          spaceKeyToPlayOrPause={false}
-          style={{ width: "100%", height: "100%" }}
+          playsInline
+          preload="auto"
+          onEnded={() => setEnded(true)}
+          onError={() => setEnded(true)}
+          style={{
+            display: "block",
+            width: "100%",
+            height: "100%",
+            objectFit: "contain",
+            background: CREAM,
+          }}
         />
       ) : null}
     </div>
