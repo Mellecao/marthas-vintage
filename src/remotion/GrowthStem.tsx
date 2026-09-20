@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import {
   AbsoluteFill,
   continueRender,
@@ -7,6 +7,7 @@ import {
 } from "remotion";
 import { LOGO_VIEWBOX, originOf, type Bbox, type Layer } from "./layers";
 import guide from "./growth-guide.json";
+import { LayerQualityContext, sourceFor } from "./LogoLayer";
 
 export type Branch = {
   d: string;
@@ -122,14 +123,19 @@ export const GrowthStem: React.FC<{
   /** Optional SVG matrix applied to the guides, used to mirror one side onto the other. */
   transform?: string;
 }> = ({ layer, branches, progress, maskId, sway, transform }) => {
+  // This draws the artwork through a raw <image href>, so it has to resolve the
+  // source the way LogoLayer does instead of inheriting it.
+  const quality = useContext(LayerQualityContext);
+  const src = sourceFor(layer.src, quality);
+
   // <image> inside SVG isn't tracked by Remotion, so hold the render until it loads.
   useEffect(() => {
     const handle = delayRender(`loading ${layer.id}`);
     const img = new Image();
     img.onload = img.onerror = () => continueRender(handle);
-    img.src = layer.src;
+    img.src = src;
     return () => continueRender(handle);
-  }, [layer.id, layer.src]);
+  }, [layer.id, src]);
 
   return (
     <AbsoluteFill style={{ willChange: "transform" }}>
@@ -168,7 +174,7 @@ export const GrowthStem: React.FC<{
           </mask>
         </defs>
         <image
-          href={layer.src}
+          href={src}
           x={0}
           y={0}
           width={LOGO_VIEWBOX.width}

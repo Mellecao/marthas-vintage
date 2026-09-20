@@ -20,11 +20,18 @@ export type Layer = {
  * The bitmaps are 2220px wide, comfortably above the 1766px the widest
  * composition draws them at.
  */
-const part = (name: string, bbox: Bbox): Layer => ({
-  id: name,
-  src: staticFile(`assets/logo/logo-partes/raster/${name}.png`),
-  bbox,
-});
+/** Every part the composition draws, for preloading before playback. */
+export const ALL_LAYERS: Layer[] = [];
+
+const part = (name: string, bbox: Bbox): Layer => {
+  const layer: Layer = {
+    id: name,
+    src: staticFile(`assets/logo/logo-partes/raster/${name}.png`),
+    bbox,
+  };
+  ALL_LAYERS.push(layer);
+  return layer;
+};
 
 export const SCENERY = {
   floor: part("tracos-do-chao", { x: 565.9, y: 3993.7, width: 4412.3, height: 289 }),

@@ -10,7 +10,7 @@
 }
 
 :root {
-  --background: #1f1f1f;
+  --background: var(--paper);
   --paper: #fbf1de;
   --ink: #1f1715;
   --brown: #251e18;
@@ -41,13 +41,15 @@ p, h1, h2, figure { margin: 0; }
 
 /* Last-resort exit that does not depend on React, Remotion, or an `ended`
    event. If hydration or iOS rendering stalls, the server-rendered cream layer
-   becomes non-blocking on its own. Normal completion removes it much sooner. */
+   becomes non-blocking on its own. Normal completion removes it much sooner.
+   Sits past the loader's own JS failsafe, which waits out the preload budget
+   plus the longest cut of the intro. */
 @keyframes logo-loader-failsafe {
   0%, 99.9% { visibility: visible; pointer-events: auto; }
   100% { visibility: hidden; pointer-events: none; }
 }
 [data-logo-loader] {
-  animation: logo-loader-failsafe 9s linear forwards;
+  animation: logo-loader-failsafe 14s linear forwards;
 }
 
 .sr-only {

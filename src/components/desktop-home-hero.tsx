@@ -16,7 +16,15 @@ const navItems = [
   { className: "desktop-nav-contact", href: "#desktop-contact", label: "Contact" },
 ];
 
-export function DesktopHomeHero() {
+type DesktopHomeHeroProps = {
+  imageSrc?: string;
+  imageAlt?: string;
+};
+
+export function DesktopHomeHero({
+  imageSrc = MODEL,
+  imageAlt = "Three women wearing distinctive vintage looks",
+}: DesktopHomeHeroProps = {}) {
   const root = useRef<HTMLElement>(null);
 
   useLayoutEffect(() => {
@@ -244,7 +252,7 @@ export function DesktopHomeHero() {
       </p>
 
       <div className="desktop-home-photo" data-desktop-photo>
-        <img src={MODEL} alt="Three women wearing distinctive vintage looks" />
+        <img src={imageSrc} alt={imageAlt} />
         <span className="desktop-photo-paper" aria-hidden="true" />
       </div>
 

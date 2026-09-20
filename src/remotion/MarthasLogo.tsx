@@ -20,11 +20,20 @@ import {
   unmirrorBbox,
   type Layer,
 } from "./layers";
-import { LogoLayer } from "./LogoLayer";
+import { LayerQualityContext, LogoLayer, type LayerQuality } from "./LogoLayer";
 import { GUIDES, GrowthStem, OVERSHOOT, wavefrontAcross } from "./GrowthStem";
 
 export const CREAM = "#f6efe2";
 export const DURATION = 240;
+
+/**
+ * Frame at which the scene has actually settled: the last butterfly touches
+ * down at 134 + its 58-frame flight. DURATION keeps a tail past this for the
+ * offline render, but the site's loading screen has no reason to hold a
+ * finished logo on screen, so it plays to here and leaves. Phones get the same
+ * cut — stopping earlier lands mid-word in "Vintage".
+ */
+export const SETTLED = 200;
 
 const TIMING = {
   stemLeft: 0,
@@ -299,18 +308,22 @@ const Scene: React.FC = () => {
   );
 };
 
-export const MarthasLogo: React.FC = () => (
-  <AbsoluteFill style={{ backgroundColor: CREAM }}>
-    <AbsoluteFill
-      style={{
-        aspectRatio: `${LOGO_VIEWBOX.width} / ${LOGO_VIEWBOX.height}`,
-        margin: "auto",
-        inset: 0,
-        width: "92%",
-        height: "auto",
-      }}
-    >
-      <Scene />
+export const MarthasLogo: React.FC<{ quality?: LayerQuality }> = ({
+  quality = "full",
+}) => (
+  <LayerQualityContext.Provider value={quality}>
+    <AbsoluteFill style={{ backgroundColor: CREAM }}>
+      <AbsoluteFill
+        style={{
+          aspectRatio: `${LOGO_VIEWBOX.width} / ${LOGO_VIEWBOX.height}`,
+          margin: "auto",
+          inset: 0,
+          width: "92%",
+          height: "auto",
+        }}
+      >
+        <Scene />
+      </AbsoluteFill>
     </AbsoluteFill>
-  </AbsoluteFill>
+  </LayerQualityContext.Provider>
 );

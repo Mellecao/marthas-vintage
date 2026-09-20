@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "assets": [
+    {
+      "id": "hero-store-wall",
+      "role": "threshold",
+      "sourceFilename": "1000014872.jpg",
+      "sourceArchive": "Martha supplied originals/latest-2026-09-09-to-11/1000014872.jpg",
+      "sourceSha256": "ec7fb7af7a3925aeb2cf2a0c9028761e8130feb19664a0f66671689aac3ac90f",
+      "sourceDimensions": {
+        "width": 1536,
+        "height": 1307
+      },
+      "projectPath": "/assets/site/authored-world/hero/store-wall-original.jpg",
+      "projectSha256": "ec7fb7af7a3925aeb2cf2a0c9028761e8130feb19664a0f66671689aac3ac90f",
+      "authenticity": "original-supplied-by-martha",
+      "edits": [
+        "none"
+      ],
+      "desktopCropIntent": "Preserve the hanging garments and mannequin; favor the upper wall as a calm navigation zone.",
+      "mobileCropIntent": "Favor the black and rose dresses with part of the styled mannequin; retain enough wall to read as a real display.",
+      "approvalState": "implementation-source-selected",
+      "altDraft": "A wall in Martha's shop displaying vintage dresses, a fringed textile, framed needlework, baskets and a styled mannequin"
+    },
+    {
+      "role": "styled-look-and-detail",
+      "publicPath": "/assets/site/authored-world/styled/pattern-mixing.jpg",
+      "sourceArchive": "Martha supplied originals/drive-links/943b2961-a00a-4eae-9be4-ba4d6f22ac9b-1_all_11676.jpg",
+      "sourceFilename": "943b2961-a00a-4eae-9be4-ba4d6f22ac9b-1_all_11676.jpg",
+      "width": 1224,
+      "height": 3600,
+      "sha256": "ff1eaaf250696592175a765d4380318b22ecebe7fb673794410d0b26231c1b4c",
+      "provenance": "supplied-by-martha",
+      "visibleGeneratedContentLabel": false,
+      "reviewMethod": "full-frame visual review on 2026-09-18"
+    },
+    {
+      "role": "styled-look-and-detail",
+      "publicPath": "/assets/site/authored-world/styled/red-and-black.jpg",
+      "sourceArchive": "Martha supplied originals/drive-links/943b2961-a00a-4eae-9be4-ba4d6f22ac9b-1_all_5670.jpg",
+      "sourceFilename": "943b2961-a00a-4eae-9be4-ba4d6f22ac9b-1_all_5670.jpg",
+      "width": 2030,
+      "height": 3832,
+      "sha256": "47cf63572ce4bfc5c1d1952ebf2e7b2f7d0cfe8e5c9fc53995be8d14d0681150",
+      "provenance": "supplied-by-martha",
+      "visibleGeneratedContentLabel": false,
+      "reviewMethod": "full-frame visual review on 2026-09-18"
+    },
+    {
+      "role": "styled-look-and-detail",
+      "publicPath": "/assets/site/authored-world/styled/rose-and-aqua.jpg",
+      "sourceArchive": "Martha supplied originals/drive-links/943b2961-a00a-4eae-9be4-ba4d6f22ac9b-1_all_5708.jpg",
+      "sourceFilename": "943b2961-a00a-4eae-9be4-ba4d6f22ac9b-1_all_5708.jpg",
+      "width": 2198,
+      "height": 3466,
+      "sha256": "c20e17d96b83ab9cd8f41664b54de2098a34bc6efddb29f6de59100e37e5013d",
+      "provenance": "supplied-by-martha",
+      "visibleGeneratedContentLabel": false,
+      "reviewMethod": "full-frame visual review on 2026-09-18"
+    },
+    {
+      "role": "styled-look-and-detail",
+      "publicPath": "/assets/site/authored-world/styled/green-plaid.jpg",
+      "sourceArchive": "Martha supplied originals/email-2026-08-30/943b2961-a00a-4eae-9be4-ba4d6f22ac9b-1_all_11633.jpg",
+      "sourceFilename": "943b2961-a00a-4eae-9be4-ba4d6f22ac9b-1_all_11633.jpg",
+      "width": 2140,
+      "height": 3760,
+      "sha256": "b95ee093d45b3063f9f9561faa816ca18375288d5c4f5d6108b4dd22d2082db4",
+      "provenance": "supplied-by-martha",
+      "visibleGeneratedContentLabel": false,
+      "reviewMethod": "full-frame visual review on 2026-09-18"
+    },
+    {
+      "role": "styled-look-and-detail",
+      "publicPath": "/assets/site/authored-world/styled/monochrome-layers.jpg",
+      "sourceArchive": "Martha supplied originals/email-2026-08-30/943b2961-a00a-4eae-9be4-ba4d6f22ac9b-1_all_11639.jpg",
+      "sourceFilename": "943b2961-a00a-4eae-9be4-ba4d6f22ac9b-1_all_11639.jpg",
+      "width": 1948,
+      "height": 3604,
+      "sha256": "1919897bcf46d7e10be84fa9e464086183de1d569984818da63ee49bade033f7",
+      "provenance": "supplied-by-martha",
+      "visibleGeneratedContentLabel": false,
+      "reviewMethod": "full-frame visual review on 2026-09-18"
+    },
+    {
+      "role": "styled-look-and-detail",
+      "publicPath": "/assets/site/authored-world/styled/burgundy-handwork.jpg",
+      "sourceArchive": "Martha supplied originals/email-2026-08-30/943b2961-a00a-4eae-9be4-ba4d6f22ac9b-1_all_13126.jpg",
+      "sourceFilename": "943b2961-a00a-4eae-9be4-ba4d6f22ac9b-1_all_13126.jpg",
+      "width": 2080,
+      "height": 4000,
+      "sha256": "ddc469890144d883a19acd61064414cc639b35de4dfa690b1dd2956047e81e80",
+      "provenance": "supplied-by-martha",
+      "visibleGeneratedContentLabel": false,
+      "reviewMethod": "full-frame visual review on 2026-09-18"
+    }
+  ]
+}

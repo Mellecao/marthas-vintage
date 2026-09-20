@@ -1,0 +1,1429 @@
+.page {
+  --tc-canvas: #f6efe2;
+  --tc-surface: #fbf7ef;
+  --tc-ink: #17110e;
+  --tc-muted: #6f655d;
+  --tc-rose: #b8323c;
+  --tc-rust: #b65b2a;
+  --tc-teal: #2c6663;
+  --tc-mustard: #c59a3d;
+  --tc-plum: #66304c;
+  --tc-leaf: #55704a;
+  --tc-hero-edge: #cabaa7;
+  position: relative;
+  min-height: 100%;
+  overflow: clip;
+  isolation: isolate;
+  color: var(--tc-ink);
+  background: var(--tc-canvas);
+  font-family: var(--font-geist-sans), Arial, sans-serif;
+}
+
+.page *,
+.page *::before,
+.page *::after {
+  box-sizing: border-box;
+}
+
+.page :focus-visible {
+  outline: 2px solid var(--tc-ink);
+  outline-offset: 5px;
+}
+
+.skipLink {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 400;
+  padding: 10px 14px;
+  color: var(--tc-surface);
+  background: var(--tc-ink);
+  transform: translateY(-180%);
+  transition: transform 180ms ease;
+}
+
+.skipLink:focus {
+  transform: translateY(0);
+}
+
+.page [data-preserved-home-hero] .desktop-home-photo > img {
+  object-position: center 50%;
+}
+
+.page [data-preserved-home-hero] {
+  position: relative;
+  z-index: 5;
+  isolation: isolate;
+  /* .site-shell narrows itself to a 402px phone frame from 768px up, which is
+     right for the live home page but leaves this hero as a thin column above a
+     full-width journal. Here it always spans the page. */
+  width: 100%;
+  background: var(--paper);
+}
+
+.page [data-preserved-home-hero] .hero-photo > img:first-child {
+  object-position: 66% 50%;
+}
+
+/* The hero and the journal below it are two different papers, so their edge
+   used to read as a drawn line. They now cross over each other instead of
+   meeting: the hero's textures dissolve over its last band while a wash of
+   --tc-hero-edge fades in, and .bentoSection starts from that same tone and
+   climbs to its own cream over the empty top padding. --tc-hero-edge is the
+   measured average of the hero's composite (--paper under paper.jpg at .88
+   and grunge.png at .38, both darken), so the hero's bottom edge keeps its
+   weight - only the grain goes - and nothing brightens at the join.
+   Desktop only; the phone hero is a separate composition with no such seam. */
+@media (min-width: 1024px) {
+  .page [data-preserved-home-hero] :global(.desktop-paper-texture),
+  .page [data-preserved-home-hero] :global(.desktop-grunge-texture) {
+    -webkit-mask-image: linear-gradient(to bottom, #000 84%, transparent 99%);
+    mask-image: linear-gradient(to bottom, #000 84%, transparent 99%);
+  }
+
+  /* Above the photo (z 10), below the discover link (z 31) and the textures
+     it is trading places with (z 40), so no lettering is washed over. */
+  .page [data-preserved-home-hero] :global(.desktop-home)::after {
+    content: "";
+    position: absolute;
+    z-index: 30;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 16%;
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      rgba(202, 186, 167, 0) 0%,
+      rgba(202, 186, 167, 0.62) 52%,
+      var(--tc-hero-edge) 100%
+    );
+  }
+
+  /* .page carries the weight this rule needs to beat the plain .bentoSection
+     background declared further down the file. */
+  .page .bentoSection {
+    background:
+      radial-gradient(circle at 7% 18%, rgba(197, 154, 61, 0.2), transparent 22%),
+      linear-gradient(
+        180deg,
+        var(--tc-hero-edge) 0,
+        #e0d5c2 clamp(96px, 11vh, 160px),
+        rgba(251, 247, 239, 0.96) clamp(280px, 34vh, 460px),
+        rgba(246, 239, 226, 0.93)
+      );
+  }
+}
+
+/* ---- Phone hero -------------------------------------------------------- */
+/* Same parts as the desktop hero, stacked instead of choreographed. Lives in
+   this module rather than globals.css because globals is shared with the live
+   home page at "/", which keeps its own opening screen. */
+
+.phoneHero {
+  position: relative;
+  display: flex;
+  min-height: 100svh;
+  flex-direction: column;
+  padding: 20px 22px 34px;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--paper);
+  color: var(--tc-ink);
+}
+
+/* The crust the whole brand sits on, over the photo as it is on desktop. */
+.phonePaper,
+.phoneGrunge {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  pointer-events: none;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  mix-blend-mode: darken;
+}
+
+.phonePaper {
+  background-image: url("/assets/site/paper.jpg");
+  opacity: 0.88;
+}
+
+.phoneGrunge {
+  background-image: url("/assets/site/grunge.png");
+  opacity: 0.38;
+}
+
+.phoneHeroHead {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 16px;
+}
+
+.phoneMarthas {
+  display: none;
+  width: min(62%, 280px);
+  height: auto;
+}
+
+.phoneFixedLogo {
+  display: block;
+  width: min(51vw, 200px);
+  height: auto;
+}
+
+/* Hidden on phones, where the MENU button owns navigation. */
+.phoneNav {
+  position: relative;
+  z-index: 3;
+  display: none;
+  margin-top: 26px;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+}
+
+.phoneNav a {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-height: 34px;
+  overflow: hidden;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.phoneNavLeader {
+  flex: 1;
+  overflow: hidden;
+  color: rgba(31, 23, 21, 0.5);
+  letter-spacing: 0.3em;
+}
+
+.phoneHeroStage {
+  position: relative;
+  z-index: 1;
+  margin: clamp(18px, 5vw, 30px) 0 0;
+}
+
+.phoneHeroPhoto {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: 62% 50%;
+}
+
+.phoneButterfly {
+  position: absolute;
+  z-index: 3;
+  top: -22px;
+  /* Inside the hero's clip, or the far wing gets sliced off on a 360px phone. */
+  right: 2px;
+  width: clamp(72px, 22vw, 104px);
+  height: auto;
+  transform: rotate(-12deg);
+}
+
+/* Pulled up so the lettering overlaps the photo's edge, the way the desktop
+   wordmarks sit against the picture rather than under it. */
+.phoneVintage {
+  position: relative;
+  z-index: 3;
+  display: none;
+  width: min(54%, 250px);
+  height: auto;
+  margin: -18px 0 0 auto;
+}
+
+.phoneLead {
+  position: relative;
+  z-index: 3;
+  max-width: 34ch;
+  margin: clamp(22px, 6vw, 34px) 0 0;
+  font-family: var(--font-poltawski), Georgia, serif;
+  font-size: clamp(16px, 4.3vw, 19px);
+  line-height: 1.34;
+}
+
+.phoneRule {
+  position: relative;
+  z-index: 3;
+  display: block;
+  height: 1px;
+  margin: clamp(20px, 5vw, 28px) 0 0;
+  background: rgba(31, 23, 21, 0.28);
+}
+
+.phoneDiscover {
+  position: relative;
+  z-index: 3;
+  margin-top: 14px;
+  font-size: 11px;
+  font-weight: 680;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.phoneDiscover span {
+  margin-left: 6px;
+}
+
+/* The tablet band: the phone composition holds, but at twice the width the
+   photo has to stop being a tall portrait and the lettering has to stop being
+   two thirds of the screen. */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .phoneHeroHead {
+    justify-content: space-between;
+  }
+
+  .phoneFixedLogo {
+    display: none;
+  }
+
+  .phoneNav {
+    display: grid;
+    max-width: 420px;
+  }
+
+  .phoneHero {
+    padding: 34px clamp(28px, 6vw, 72px) 44px;
+  }
+
+  .phoneMarthas {
+    display: block;
+    width: min(44%, 360px);
+  }
+
+  .phoneVintage {
+    display: block;
+    width: min(38%, 320px);
+    margin-top: -26px;
+  }
+
+  .phoneHeroPhoto {
+    aspect-ratio: 16 / 11;
+    object-position: 62% 44%;
+  }
+
+  .phoneLead {
+    max-width: 48ch;
+    font-size: 20px;
+  }
+}
+
+.anchor {
+  position: absolute;
+  top: -90px;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.fixedPaperTexture {
+  position: fixed;
+  z-index: 4;
+  inset: 0;
+  display: block;
+  pointer-events: none;
+  background-image: url("/assets/site/paper.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 0.58;
+  filter: grayscale(1) brightness(0.72) contrast(3.2);
+  mix-blend-mode: soft-light;
+}
+
+.fixedTexture {
+  position: fixed;
+  z-index: 0;
+  display: block;
+  pointer-events: none;
+  background-position: center;
+  background-size: cover;
+  opacity: 0.095;
+  filter: saturate(0.82) contrast(1.08);
+  mix-blend-mode: multiply;
+  will-change: transform;
+}
+
+.fixedNeedlepoint {
+  top: 12vh;
+  right: -8vw;
+  width: min(42vw, 680px);
+  aspect-ratio: 1.2;
+  background-image: url("/assets/site/textile-cargo/details/needlepoint-baskets.jpg");
+  clip-path: polygon(11% 3%, 93% 8%, 99% 84%, 78% 97%, 5% 90%, 1% 18%);
+}
+
+.fixedEmbroidery {
+  bottom: -10vh;
+  left: -10vw;
+  width: min(38vw, 600px);
+  aspect-ratio: 1;
+  background-image: url("/assets/site/textile-cargo/details/embroidery-basket.jpg");
+  clip-path: polygon(6% 12%, 77% 2%, 98% 26%, 88% 96%, 17% 91%, 1% 66%);
+  opacity: 0.07;
+}
+
+.bentoSection,
+.storeSection,
+.chapterSection,
+.marqueeBand,
+.materialCoda,
+.objectGallery,
+.visitFooter {
+  position: relative;
+  z-index: 2;
+}
+
+.bentoSection {
+  padding: clamp(110px, 11vw, 190px) clamp(28px, 5.5vw, 100px) clamp(120px, 12vw, 210px);
+  background:
+    radial-gradient(circle at 7% 18%, rgba(197, 154, 61, 0.2), transparent 22%),
+    linear-gradient(180deg, rgba(251, 247, 239, 0.96), rgba(246, 239, 226, 0.93));
+}
+
+.bentoIntro {
+  display: grid;
+  grid-template-columns: minmax(170px, 0.55fr) minmax(420px, 1.35fr) minmax(240px, 0.75fr);
+  gap: clamp(28px, 4vw, 74px);
+  align-items: end;
+  max-width: 1760px;
+  margin: 0 auto clamp(64px, 7vw, 118px);
+}
+
+.eyebrow,
+.cellLabel {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 680;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.eyebrow {
+  color: var(--tc-muted);
+}
+
+.bentoIntro h2,
+.chapterHeader h2 {
+  margin: 0;
+  font-family: var(--font-geist-sans), Arial, sans-serif;
+  font-weight: 570;
+  letter-spacing: -0.075em;
+}
+
+.bentoIntro h2 {
+  font-size: clamp(82px, 10vw, 168px);
+  line-height: 0.76;
+}
+
+.bentoLead {
+  max-width: 27ch;
+  margin: 0;
+  font-family: var(--font-poltawski), Georgia, serif;
+  font-size: clamp(20px, 1.65vw, 29px);
+  line-height: 1.26;
+}
+
+.bentoGrid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-rows: repeat(10, minmax(42px, 5.4vw));
+  gap: clamp(10px, 1.25vw, 22px);
+  max-width: 1760px;
+  margin: 0 auto;
+}
+
+/* The lead used to sit in .bentoIntro, level with "Meet Martha."; it now drops
+   into the collage's empty top-right cell, above .portraitCandid. Scoped to the
+   grid layout because .bentoGrid is a plain column flex below 1024px, where the
+   paragraph simply keeps its place as the first item. */
+@media (min-width: 1024px) {
+  .bentoGrid .bentoLead {
+    grid-column: 10 / span 3;
+    grid-row: 1 / span 2;
+    align-self: center;
+    max-width: none;
+  }
+}
+
+.bentoCell {
+  position: relative;
+  min-width: 0;
+}
+
+.stitchOutline,
+.textileOutline {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.stitchOutline {
+  inset: 8px;
+  width: calc(100% - 16px);
+  height: calc(100% - 16px);
+}
+
+.stitchPath {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 0.8;
+  stroke-dasharray: 2.4 1.6;
+  stroke-linecap: round;
+  opacity: 0.58;
+}
+
+.textileOutline path {
+  fill: none;
+  stroke: rgba(23, 17, 14, 0.72);
+  stroke-width: 1.1;
+}
+
+.statementCell {
+  grid-column: 1 / span 5;
+  grid-row: 1 / span 4;
+  padding: clamp(28px, 3.4vw, 62px);
+  color: var(--tc-surface);
+  background: var(--tc-plum);
+  transform: rotate(-0.5deg);
+}
+
+.statementCell blockquote {
+  max-width: 24ch;
+  margin: clamp(24px, 3vw, 50px) 0 0;
+  font-family: var(--font-poltawski), Georgia, serif;
+  font-size: clamp(25px, 2.5vw, 45px);
+  line-height: 1.08;
+}
+
+.portraitPrimary {
+  grid-column: 6 / span 4;
+  grid-row: 1 / span 6;
+  transform: rotate(0.8deg);
+}
+
+.portraitCandid {
+  grid-column: 10 / span 3;
+  grid-row: 3 / span 4;
+  transform: rotate(-1deg);
+}
+
+.portraitPrimary > div,
+.portraitCandid > div {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #d8d0c5;
+}
+
+.portraitPrimary img,
+.portraitCandid img {
+  object-fit: cover;
+}
+
+.portraitPrimary img {
+  object-position: 50% 38%;
+}
+
+.portraitCandid img {
+  object-position: 46% 45%;
+}
+
+.textileCropA {
+  clip-path: polygon(7% 2%, 94% 6%, 98% 83%, 86% 98%, 11% 94%, 2% 17%);
+}
+
+.textileCropB {
+  clip-path: polygon(5% 8%, 82% 2%, 98% 20%, 93% 91%, 14% 98%, 1% 74%);
+}
+
+.portraitPrimary figcaption,
+.portraitCandid figcaption {
+  position: absolute;
+  z-index: 5;
+  right: 16px;
+  bottom: 14px;
+  left: 16px;
+  padding: 8px 10px;
+  color: var(--tc-surface);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: rgba(23, 17, 14, 0.78);
+}
+
+.instinctCell {
+  grid-column: 1 / span 4;
+  grid-row: 5 / span 3;
+  padding: clamp(24px, 2.7vw, 48px);
+  color: var(--tc-ink);
+  background: var(--tc-mustard);
+  transform: rotate(0.4deg);
+}
+
+.instinctCell h3 {
+  margin: 22px 0 0;
+  font-size: clamp(30px, 3.2vw, 58px);
+  font-weight: 590;
+  line-height: 0.91;
+  letter-spacing: -0.05em;
+}
+
+.locationCell {
+  grid-column: 5 / span 5;
+  grid-row: 7 / span 3;
+  padding: clamp(25px, 2.7vw, 48px);
+  color: var(--tc-surface);
+  background: var(--tc-teal);
+  transform: rotate(-0.35deg);
+}
+
+.locationCell > p:last-child {
+  max-width: 35ch;
+  margin: clamp(20px, 2.2vw, 38px) 0 0;
+  font-family: var(--font-poltawski), Georgia, serif;
+  font-size: clamp(19px, 1.65vw, 29px);
+  line-height: 1.22;
+}
+
+.colorCell {
+  grid-column: 10 / span 3;
+  grid-row: 7 / span 3;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr) auto;
+  overflow: hidden;
+  clip-path: polygon(3% 8%, 94% 1%, 99% 88%, 82% 99%, 6% 93%);
+}
+
+.colorCell > span {
+  display: block;
+}
+
+.colorCell p {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 14px 16px;
+  color: var(--tc-surface);
+  font-family: var(--font-poltawski), Georgia, serif;
+  font-size: clamp(16px, 1.15vw, 21px);
+  line-height: 1.12;
+  background: var(--tc-ink);
+}
+
+.chapterSection {
+  padding: clamp(110px, 10vw, 180px) 0 clamp(130px, 12vw, 220px);
+  background: rgba(246, 239, 226, 0.95);
+}
+
+.chapterHeader {
+  display: grid;
+  grid-template-columns: minmax(170px, 0.5fr) minmax(480px, 1.35fr) minmax(240px, 0.68fr);
+  gap: clamp(28px, 4vw, 72px);
+  align-items: end;
+  width: min(calc(100% - clamp(52px, 8vw, 150px)), 1760px);
+  margin: 0 auto clamp(64px, 6vw, 108px);
+}
+
+.chapterHeader h2 {
+  max-width: 9ch;
+  font-size: clamp(72px, 8.5vw, 146px);
+  line-height: 0.8;
+}
+
+.chapterHeader > p:last-child {
+  max-width: 30ch;
+  margin: 0;
+  color: var(--tc-muted);
+  font-family: var(--font-poltawski), Georgia, serif;
+  font-size: clamp(18px, 1.45vw, 25px);
+  line-height: 1.32;
+}
+
+.chapterStage {
+  position: relative;
+}
+
+.chapterTrack {
+  display: block;
+}
+
+.chapter {
+  position: relative;
+  width: min(calc(100% - clamp(52px, 8vw, 150px)), 1760px);
+  margin: 0 auto;
+}
+
+.chapter + .chapter {
+  margin-top: clamp(54px, 6vw, 104px);
+}
+
+.chapterQuote {
+  --chapter-accent: var(--tc-rose);
+  padding: clamp(28px, 3.4vw, 56px);
+  background: color-mix(in srgb, var(--chapter-accent) 16%, var(--tc-surface));
+}
+
+.chapterQuote > p {
+  margin: 0 0 20px;
+  color: var(--tc-muted);
+  font-size: 11px;
+  font-weight: 680;
+  letter-spacing: 0.14em;
+}
+
+.chapterQuote h3 {
+  max-width: 11ch;
+  margin: 0;
+  font-size: clamp(38px, 4.2vw, 72px);
+  font-weight: 580;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+}
+
+.chapterQuote blockquote {
+  max-width: 34ch;
+  margin: clamp(20px, 2.4vw, 36px) 0 0;
+  font-family: var(--font-poltawski), Georgia, serif;
+  font-size: clamp(18px, 1.5vw, 26px);
+  line-height: 1.3;
+}
+
+.chapterImages {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  grid-template-rows: repeat(2, minmax(220px, 24vw));
+  gap: clamp(12px, 1.5vw, 24px);
+  margin-top: clamp(24px, 2.8vw, 44px);
+}
+
+.chapterFigure {
+  position: relative;
+  min-height: 0;
+  overflow: visible;
+}
+
+.chapterFigure:first-child {
+  grid-row: 1 / span 2;
+}
+
+.chapterFigure img {
+  object-fit: cover;
+  clip-path: polygon(5% 2%, 94% 5%, 99% 84%, 87% 98%, 9% 94%, 1% 18%);
+}
+
+.chapterFigure:nth-child(2) img {
+  clip-path: polygon(2% 9%, 88% 2%, 98% 20%, 94% 93%, 10% 98%, 4% 72%);
+}
+
+.chapterFigure:nth-child(3) img {
+  clip-path: polygon(8% 2%, 97% 8%, 94% 95%, 18% 98%, 2% 78%, 4% 16%);
+}
+
+.roadline {
+  display: none;
+}
+
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .chapterStage {
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .roadline {
+    position: absolute;
+    top: clamp(28px, 4vw, 56px);
+    left: 0;
+    z-index: 3;
+    display: block;
+    width: 100%;
+    height: 60px;
+    color: var(--tc-ink);
+    opacity: 0.34;
+    pointer-events: none;
+  }
+
+  .roadline path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.4;
+    stroke-linecap: round;
+  }
+
+  .chapterTrack {
+    display: flex;
+    width: max-content;
+    height: 100%;
+    will-change: transform;
+  }
+
+  .chapter {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    align-items: center;
+    width: 100vw;
+    height: 100%;
+    margin-top: 0 !important;
+    padding: 0 clamp(52px, 8vw, 150px);
+  }
+
+  .chapter .chapterQuote {
+    grid-column: 1 / span 5;
+  }
+
+  .chapter .chapterImages {
+    grid-column: 6 / span 7;
+    margin-top: 0;
+  }
+
+  /* Each quote card read as leaning into its own photo group. These push the
+     card away from the photos, onto the centre line marked on the review
+     screenshots (measured at a 1920px viewport: 63px left, 111px right). The
+     caps keep the nudge from growing past that on ultrawide displays. */
+  .chapterA .chapterQuote {
+    position: relative;
+    left: max(-3.3vw, -64px);
+  }
+
+  .chapterB .chapterQuote {
+    position: relative;
+    left: min(5.8vw, 112px);
+    grid-column: 8 / span 5;
+    order: 2;
+  }
+
+  .chapterB .chapterImages {
+    grid-column: 1 / span 7;
+    order: 1;
+  }
+
+  .chapterC {
+    grid-template-rows: auto 1fr;
+    row-gap: clamp(20px, 2.6vw, 40px);
+  }
+
+  .chapterC .chapterQuote {
+    grid-column: 1 / span 12;
+    grid-row: 1;
+    max-width: 62ch;
+  }
+
+  .chapterC .chapterImages {
+    grid-column: 1 / span 12;
+    grid-row: 2;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: minmax(220px, 30vw);
+  }
+
+  .chapterC .chapterFigure:first-child {
+    grid-row: auto;
+  }
+}
+
+.storeSection {
+  padding: clamp(40px, 5vw, 90px) clamp(28px, 5.5vw, 100px) clamp(70px, 7vw, 140px);
+}
+
+.storeFigure {
+  position: relative;
+  max-width: 1760px;
+  min-height: 64vh;
+  margin: 0 auto;
+}
+
+.storeCrop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #d8d0c5;
+  clip-path: polygon(3% 2%, 97% 4%, 99% 88%, 90% 99%, 8% 97%, 1% 12%);
+}
+
+.storeCrop img {
+  object-fit: cover;
+  object-position: 50% 42%;
+}
+
+.storeSeal {
+  position: absolute;
+  top: 0;
+  left: clamp(24px, 4vw, 64px);
+  z-index: 5;
+  display: grid;
+  width: 132px;
+  height: 132px;
+  transform: translateY(-42%);
+  border-radius: 50%;
+  background: var(--tc-surface);
+  box-shadow: 0 0 0 1px rgba(23, 17, 14, 0.35);
+  place-items: center;
+}
+
+.storeSeal :global(.rotating-badge) {
+  width: 108px;
+  height: 108px;
+  flex: 0 0 108px;
+  color: var(--tc-rose);
+}
+
+.storeCaption {
+  position: absolute;
+  right: clamp(24px, 4vw, 64px);
+  bottom: clamp(24px, 3vw, 48px);
+  z-index: 5;
+  max-width: 34ch;
+  padding: clamp(18px, 2vw, 28px);
+  background: rgba(246, 239, 226, 0.92);
+}
+
+.storeCaption .eyebrow {
+  margin: 0 0 8px;
+}
+
+.storeCaption h2 {
+  margin: 0;
+  font-family: var(--font-geist-sans), Arial, sans-serif;
+  font-weight: 570;
+  font-size: clamp(22px, 2vw, 32px);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+
+.marqueeBand {
+  padding-block: clamp(14px, 1.6vw, 22px);
+  background: var(--tc-canvas);
+}
+
+.materialCoda {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 80vh;
+  color: var(--tc-surface);
+  background: var(--tc-plum);
+}
+
+.materialCoda > div {
+  display: grid;
+  align-content: center;
+  padding: clamp(60px, 8vw, 140px);
+}
+
+.materialCoda h2 {
+  max-width: 8ch;
+  margin: 0;
+  font-size: clamp(68px, 8vw, 138px);
+  font-weight: 560;
+  line-height: 0.82;
+  letter-spacing: -0.07em;
+}
+
+.materialCoda p {
+  max-width: 31ch;
+  margin: 34px 0 0;
+  font-family: var(--font-poltawski), Georgia, serif;
+  font-size: clamp(21px, 1.65vw, 29px);
+  line-height: 1.28;
+}
+
+.codaImage {
+  position: relative;
+  min-height: 60vh;
+}
+
+.codaImage img {
+  object-fit: cover;
+}
+
+/* "Everything speaks" makes the claim; this band is the evidence. Same plum as
+   .materialCoda so the two read as one block running into the footer. */
+.objectGallery {
+  padding: clamp(40px, 4.5vw, 84px) clamp(28px, 6vw, 110px) clamp(60px, 7vw, 130px);
+  background: var(--tc-plum);
+}
+
+/* A 12-column bento on a square-ish unit: the row height tracks a column's
+   width, so a cell spanning c columns and r rows lands at roughly c/r, and
+   BEYOND_OBJECTS can pick each photo a cell that matches its own shape. The
+   ten cells tile the 12 x 14 field exactly - no filler, no gaps. */
+.objectGrid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-auto-rows: clamp(44px, 6.4vw, 124px);
+  gap: clamp(10px, 1vw, 18px);
+  max-width: 1760px;
+  margin: 0 auto;
+}
+
+.objectCell {
+  position: relative;
+  grid-column: var(--cell-column);
+  grid-row: var(--cell-row);
+  padding: 0;
+  overflow: hidden;
+  color: inherit;
+  background: rgba(23, 17, 14, 0.2);
+  border: 0;
+  cursor: zoom-in;
+}
+
+.objectCell img {
+  object-fit: cover;
+  transition: transform 420ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.objectCell:hover img,
+.objectCell:focus-visible img {
+  transform: scale(1.035);
+}
+
+/* showModal() puts this in the top layer, so .page's `overflow: clip` and the
+   pinned hero's transforms cannot clip it. */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  max-width: 100vw;
+  height: 100dvh;
+  max-height: 100dvh;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  border: 0;
+  background: transparent;
+}
+
+.lightbox::backdrop {
+  background: rgba(17, 12, 10, 0.94);
+}
+
+.lightboxFrame {
+  position: absolute;
+  inset: clamp(20px, 4vw, 64px);
+}
+
+.lightboxClose {
+  position: absolute;
+  z-index: 2;
+  top: clamp(14px, 2vw, 30px);
+  right: clamp(14px, 2vw, 30px);
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  color: var(--tc-surface);
+  /* The backdrop is nearly the same ink, so the button needs its own ring to
+     read as a control rather than a floating glyph. */
+  background: rgba(251, 247, 239, 0.08);
+  border: 1px solid rgba(251, 247, 239, 0.38);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 160ms ease, border-color 160ms ease;
+}
+
+.lightboxClose:hover,
+.lightboxClose:focus-visible {
+  background: rgba(251, 247, 239, 0.2);
+  border-color: rgba(251, 247, 239, 0.7);
+}
+
+.lightboxClose svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.visitFooter {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 40px;
+  align-items: end;
+  padding: clamp(70px, 9vw, 150px) clamp(28px, 6vw, 110px) 48px;
+  color: var(--tc-ink);
+  background: var(--tc-mustard);
+}
+
+.visitFooter h2 {
+  max-width: 11ch;
+  margin: 0;
+  font-size: clamp(58px, 7vw, 122px);
+  font-weight: 580;
+  line-height: 0.85;
+  letter-spacing: -0.07em;
+}
+
+.visitFooter p,
+.visitFooter a {
+  margin: 0;
+  font-family: var(--font-poltawski), Georgia, serif;
+  font-size: clamp(18px, 1.4vw, 25px);
+}
+
+.visitFooter a {
+  display: inline-block;
+  margin-top: 20px;
+}
+
+@media (max-width: 1023px) {
+  .fixedTexture {
+    position: absolute;
+  }
+
+  .fixedNeedlepoint {
+    top: 118vh;
+    right: -25vw;
+    width: 78vw;
+  }
+
+  .fixedEmbroidery {
+    bottom: 18vh;
+    left: -28vw;
+    width: 76vw;
+  }
+
+  .bentoSection,
+  .chapterSection {
+    padding-right: clamp(18px, 5vw, 40px);
+    padding-left: clamp(18px, 5vw, 40px);
+  }
+
+  .bentoIntro,
+  .chapterHeader {
+    display: block;
+    width: auto;
+  }
+
+  .bentoIntro h2,
+  .chapterHeader h2 {
+    margin-top: 20px;
+    font-size: clamp(64px, 15vw, 108px);
+    line-height: 0.8;
+  }
+
+  .bentoLead,
+  .chapterHeader > p:last-child {
+    margin-top: 30px;
+  }
+
+  .bentoGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .statementCell,
+  .instinctCell,
+  .locationCell {
+    min-height: 300px;
+    transform: none;
+  }
+
+  .portraitPrimary {
+    height: min(132vw, 720px);
+    transform: rotate(0.55deg);
+  }
+
+  .portraitCandid {
+    width: 72%;
+    height: min(72vw, 480px);
+    align-self: flex-end;
+    transform: rotate(-0.7deg);
+  }
+
+  .colorCell {
+    min-height: 270px;
+    /* The cut corners are sized for the desktop cell; on a wide, short phone
+       cell they slice into the caption. */
+    clip-path: none;
+  }
+
+  /* The bento's placements are dropped on phones: two even columns, and each
+     photo keeps a single upright cell instead of its desktop shape. */
+  .objectGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: auto;
+  }
+
+  .objectCell {
+    grid-column: auto;
+    grid-row: auto;
+    aspect-ratio: 4 / 5;
+  }
+
+  .chapterHeader {
+    margin: 0 0 52px;
+  }
+
+  .chapter {
+    width: auto;
+  }
+
+  .chapterQuote {
+    padding: 26px 20px 32px;
+  }
+
+  .chapterQuote h3 {
+    font-size: clamp(48px, 13vw, 78px);
+  }
+
+  .chapterImages {
+    display: flex;
+    gap: 14px;
+    margin: 32px -20px 0;
+    padding: 0 20px 16px;
+    overflow-x: auto;
+    scroll-padding-inline: 20px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .chapterImages::-webkit-scrollbar {
+    display: none;
+  }
+
+  .chapterFigure,
+  .chapterFigure:first-child {
+    flex: 0 0 82vw;
+    height: min(126vw, 680px);
+    grid-row: auto;
+    scroll-snap-align: start;
+  }
+
+  .storeSection {
+    padding: 48px 20px 64px;
+  }
+
+  .storeFigure {
+    min-height: 58vh;
+  }
+
+  .storeSeal {
+    left: 16px;
+    width: 96px;
+    height: 96px;
+  }
+
+  .storeSeal :global(.rotating-badge) {
+    width: 76px;
+    height: 76px;
+    flex: 0 0 76px;
+  }
+
+  .storeCaption {
+    right: 16px;
+    left: 16px;
+    max-width: none;
+  }
+
+  .marqueeBand {
+    padding-block: 10px;
+  }
+
+  .materialCoda {
+    display: flex;
+    min-height: 0;
+    flex-direction: column;
+  }
+
+  .materialCoda > div {
+    padding: 92px 24px 72px;
+  }
+
+  .codaImage {
+    min-height: 72vh;
+  }
+
+  .visitFooter {
+    display: block;
+    padding: 86px 24px 34px;
+  }
+
+  .visitFooter > div:last-child {
+    margin-top: 66px;
+  }
+}
+
+@media (max-width: 767px) {
+  .phonePaper,
+  .phoneGrunge {
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 84%, rgba(0, 0, 0, 0.72) 92%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 84%, rgba(0, 0, 0, 0.72) 92%, transparent 100%);
+  }
+
+  .phoneHero::after {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: clamp(100px, 26vw, 132px);
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      rgba(202, 186, 167, 0) 0%,
+      rgba(202, 186, 167, 0.64) 56%,
+      var(--tc-hero-edge) 100%
+    );
+  }
+
+  .page .bentoSection {
+    background:
+      radial-gradient(circle at 7% 18%, rgba(197, 154, 61, 0.2), transparent 22%),
+      linear-gradient(
+        180deg,
+        var(--tc-hero-edge) 0,
+        #ded2bf 72px,
+        rgba(251, 247, 239, 0.96) 230px,
+        rgba(246, 239, 226, 0.93) 100%
+      );
+  }
+
+  .bentoIntro {
+    margin-bottom: 30px;
+  }
+
+  .bentoIntro h2 {
+    margin-top: 14px;
+    font-size: clamp(78px, 21vw, 90px);
+    line-height: 0.76;
+  }
+
+  .bentoLead {
+    margin-top: 0;
+  }
+
+  .statementCell,
+  .instinctCell {
+    display: grid;
+    min-height: 320px;
+    padding: 36px 34px;
+    place-items: center;
+  }
+
+  .statementCell .cellLabel {
+    display: none;
+  }
+
+  .statementCell blockquote {
+    width: 100%;
+    max-width: 15ch;
+    margin: 0;
+    font-size: clamp(29px, 8vw, 34px);
+    line-height: 1.08;
+    text-align: center;
+  }
+
+  .instinctCell .cellLabel {
+    display: none;
+  }
+
+  .instinctCell h3 {
+    width: 100%;
+    margin: 0;
+    font-size: clamp(36px, 9.7vw, 42px);
+    line-height: 0.92;
+    text-align: center;
+  }
+
+  .locationCell {
+    display: grid;
+    min-height: 340px;
+    padding: 36px 34px;
+    place-items: center;
+  }
+
+  .locationCell .cellLabel {
+    position: absolute;
+    z-index: 5;
+    top: 30px;
+    right: 34px;
+    left: 34px;
+    text-align: center;
+  }
+
+  .locationCell > p:last-child {
+    width: 100%;
+    max-width: 16ch;
+    margin: 0;
+    font-size: clamp(26px, 7.2vw, 30px);
+    line-height: 1.1;
+    text-align: center;
+  }
+
+  .colorCell {
+    display: none;
+  }
+
+  .storeSection {
+    padding-top: 104px;
+  }
+
+  .storeSeal {
+    width: 192px;
+    height: 192px;
+  }
+
+  .storeSeal :global(.rotating-badge) {
+    width: 152px;
+    height: 152px;
+    flex-basis: 152px;
+  }
+
+  .objectGallery {
+    padding: 42px 0 72px 20px;
+  }
+
+  .objectGrid {
+    display: flex;
+    max-width: none;
+    gap: 14px;
+    margin: 0;
+    padding: 0 20px 16px 0;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-padding-inline: 0 20px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .objectGrid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .objectCell {
+    flex: 0 0 84vw;
+    aspect-ratio: 4 / 5;
+    scroll-snap-align: start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page *,
+  .page *::before,
+  .page *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .fixedTexture {
+    position: absolute;
+    will-change: auto;
+  }
+}
