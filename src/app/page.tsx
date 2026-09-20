@@ -2,6 +2,7 @@
 
 import { DesktopHomeHero } from "@/components/desktop-home-hero";
 import { DesktopEditorialSections } from "@/components/desktop-editorial-sections";
+import { MobileMenu } from "@/components/mobile-menu";
 import { PhotoCarousel, RotatingBadge, ScrollRoadline, SlowMarquee } from "@/components/vintage-details";
 
 const institutionalCopy =
@@ -71,24 +72,28 @@ function LayeredImage({
 
 function HeroFrame() {
   return (
-    <section className="design-frame hero-frame" aria-labelledby="hero-title">
+    <section
+      id="mobile-home"
+      className="design-frame hero-frame"
+      data-mobile-hero=""
+      aria-labelledby="hero-title"
+    >
       <PaperTexture />
       <span className="hero-space hero-space-top" aria-hidden="true" />
 
       <div className="hero-head">
         <img
           className="hero-logo"
-          src="/assets/logo/logo-marthas-fixed.svg"
+          src="/assets/logo/logo-marthas-fundotransparente-textopreto.png"
           alt="Martha's Vintage"
         />
-        <button className="menu-button" type="button" aria-label="Open menu">
-          MENU
-        </button>
+        <MobileMenu />
       </div>
 
       <span className="hero-space hero-space-head" aria-hidden="true" />
 
       <div className="hero-stage">
+        <span className="hero-photo-offset" aria-hidden="true" />
         <LayeredImage
           className="hero-photo"
           alt="Woman wearing a blue vintage dress"
@@ -100,6 +105,7 @@ function HeroFrame() {
             },
           ]}
         />
+        <span className="hero-photo-index" aria-hidden="true">01 / 06</span>
         <img
           className="hero-butterfly"
           src="/assets/logo/logo-partes/butterfly-middleleft.svg"
@@ -110,6 +116,7 @@ function HeroFrame() {
 
       <div className="hero-card">
         <span className="hero-card-texture" aria-hidden="true" />
+        <p className="hero-kicker">A personal collection</p>
         <h1 id="hero-title" className="hero-title">
           Bastrop - Texas
         </h1>
@@ -187,7 +194,7 @@ function EyesFrame() {
 
 function CollectionFrame() {
   return (
-    <section className="design-frame collection-frame" aria-label="The collection">
+    <section id="collection" className="design-frame collection-frame" aria-label="The collection">
       <PaperTexture />
       <PhotoCarousel group="collection" className="mobile-collection-carousel" />
       <figure
@@ -239,7 +246,11 @@ function CollectionFrame() {
 
 function PersonalFrame() {
   return (
-    <section className="design-frame personal-frame" aria-labelledby="personal-title">
+    <section
+      id="personal-style"
+      className="design-frame personal-frame"
+      aria-labelledby="personal-title"
+    >
       <PaperTexture />
       <span className="personal-frame-border" aria-hidden="true" />
       <p className="personal-caption personal-caption-left">
