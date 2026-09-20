@@ -29,7 +29,55 @@ body { background:linear-gradient(#f5eddf99,#f5eddf99),url('/assets/site/paper.j
   .persistent-hero-menu { position:fixed; inset:0 0 auto; width:100vw; height:100dvh; z-index:90; pointer-events:none; transform:translateY(0); transition:transform .28s ease; }
   .persistent-hero-menu.is-collapsed { transform:translateY(calc(-12.5dvh - 2px)); }
   .persistent-hero-menu.is-collapsed .desktop-nav-link { pointer-events:none; }
+  .persistent-hero-menu .desktop-nav-link {
+    width:max-content;
+    min-height:42px;
+    padding:.36em .16em .42em;
+    transition:color .28s ease;
+  }
+  .persistent-hero-menu .desktop-nav-label {
+    position:relative;
+    display:inline-block;
+    transition:transform .28s cubic-bezier(.22,1,.36,1);
+  }
+  .persistent-hero-menu .desktop-nav-label::after {
+    content:'';
+    position:absolute;
+    right:0;
+    bottom:-.16em;
+    left:0;
+    height:2px;
+    background:#784b42;
+    transform:scaleX(0);
+    transform-origin:right center;
+    transition:transform .32s cubic-bezier(.22,1,.36,1);
+  }
+  .persistent-hero-menu .desktop-nav-link:focus-visible {
+    color:#784b42;
+    outline:1px solid #784b42;
+    outline-offset:2px;
+  }
+  .persistent-hero-menu .desktop-nav-link:focus-visible .desktop-nav-label {
+    transform:translateY(-3px);
+  }
+  .persistent-hero-menu .desktop-nav-link:focus-visible .desktop-nav-label::after {
+    transform:scaleX(1);
+    transform-origin:left center;
+  }
+  @media(hover:hover) and (pointer:fine) {
+    .persistent-hero-menu .desktop-nav-link:hover { color:#784b42; }
+    .persistent-hero-menu .desktop-nav-link:hover .desktop-nav-label { transform:translateY(-3px); }
+    .persistent-hero-menu .desktop-nav-link:hover .desktop-nav-label::after {
+      transform:scaleX(1);
+      transform-origin:left center;
+    }
+  }
   @media(prefers-reduced-motion:reduce) { .persistent-hero-menu { transition:none; } }
+  @media(prefers-reduced-motion:reduce) {
+    .persistent-hero-menu .desktop-nav-link,
+    .persistent-hero-menu .desktop-nav-label,
+    .persistent-hero-menu .desktop-nav-label::after { transition:none; }
+  }
   .persistent-hero-menu::before { content:''; position:absolute; inset:0 0 auto; height:12.5%; background:var(--paper) url('/assets/site/paper.jpg') center top / 1100px auto repeat; box-shadow:0 1px 0 #78604c25; }
   .persistent-hero-menu[hidden] { display:none; }
 }

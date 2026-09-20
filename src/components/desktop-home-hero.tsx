@@ -238,7 +238,7 @@ export function DesktopHomeHero({
             data-desktop-nav-link
             href={item.href}
           >
-            <span>{item.label}</span>
+            <span className="desktop-nav-label">{item.label}</span>
             <span className="desktop-nav-leader" data-desktop-nav-leader aria-hidden="true">
               {"• ".repeat(24)}
             </span>
