@@ -10,6 +10,8 @@ const CREAM = "#f6efe2";
 const INK = "#1f1715";
 const DESKTOP_SIZE = { width: 1920, height: 1488 };
 const MOBILE_SIZE = { width: 1206, height: 2622 };
+/** Keep the desktop/notebook intro more restrained without changing mobile. */
+const DESKTOP_ARTWORK_WIDTH = "76%";
 const FADE_MS = 600;
 /**
  * The artwork is 36 separate bitmaps. Until they are all in cache the growth
@@ -177,7 +179,10 @@ export function LogoLoader() {
         <Player
           ref={player}
           component={MarthasLogo}
-          inputProps={{ quality }}
+          inputProps={{
+            quality,
+            artworkWidth: quality === "full" ? DESKTOP_ARTWORK_WIDTH : "92%",
+          }}
           // DURATION keeps its tail for the offline render; on the site the
           // intro leaves as soon as the scene has settled.
           durationInFrames={Math.min(SETTLED, DURATION)}

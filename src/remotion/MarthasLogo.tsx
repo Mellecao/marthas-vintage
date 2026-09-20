@@ -308,8 +308,12 @@ const Scene: React.FC = () => {
   );
 };
 
-export const MarthasLogo: React.FC<{ quality?: LayerQuality }> = ({
+export const MarthasLogo: React.FC<{
+  quality?: LayerQuality;
+  artworkWidth?: string;
+}> = ({
   quality = "full",
+  artworkWidth = "92%",
 }) => (
   <LayerQualityContext.Provider value={quality}>
     <AbsoluteFill style={{ backgroundColor: CREAM }}>
@@ -318,7 +322,7 @@ export const MarthasLogo: React.FC<{ quality?: LayerQuality }> = ({
           aspectRatio: `${LOGO_VIEWBOX.width} / ${LOGO_VIEWBOX.height}`,
           margin: "auto",
           inset: 0,
-          width: "92%",
+          width: artworkWidth,
           height: "auto",
         }}
       >
