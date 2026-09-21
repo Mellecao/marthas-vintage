@@ -35,6 +35,7 @@ body { background:linear-gradient(#f5eddf99,#f5eddf99),url('/assets/site/paper.j
     padding:.36em .16em .42em;
     transition:color .28s ease;
   }
+  .persistent-hero-menu .desktop-nav-leader { display:none; }
   .persistent-hero-menu .desktop-nav-label {
     position:relative;
     display:inline-block;

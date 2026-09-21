@@ -1,163 +1,94 @@
 "use client";
 
-import { Player, type PlayerRef } from "@remotion/player";
-import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
-import { DURATION, MarthasLogo, SETTLED } from "../remotion/MarthasLogo";
-import { sourceFor, type LayerQuality } from "../remotion/LogoLayer";
-import { ALL_LAYERS } from "../remotion/layers";
+import { useEffect, useState, useSyncExternalStore } from "react";
+import { isMacOSSafari } from "@/lib/browser";
 
 const CREAM = "#f6efe2";
 const INK = "#1f1715";
-const DESKTOP_SIZE = { width: 1920, height: 1488 };
-const MOBILE_SIZE = { width: 1206, height: 2622 };
-/** Keep the desktop/notebook intro more restrained without changing mobile. */
-const DESKTOP_ARTWORK_WIDTH = "76%";
+const DESKTOP_VIDEO = "/assets/site/marthas-loader-desktop.mp4";
+const MOBILE_VIDEO = "/assets/site/marthas-loader-mobile.mp4";
 const FADE_MS = 600;
-/**
- * The artwork is 36 separate bitmaps. Until they are all in cache the growth
- * plays against missing parts and the heavy ones — the stems, the woman —
- * snap in fully formed halfway through. So nothing plays until they are here,
- * and if they are not here in time the intro is skipped rather than played
- * broken.
- */
-const PRELOAD_BUDGET_MS = 4_000;
-/** Only shown if the wait is long enough to feel like a stall. */
 const HOLD_REVEAL_MS = 500;
-/** Beyond the budget plus the longest cut, something is wrong; leave anyway. */
-const FAILSAFE_MS = 14_000;
+const FAILSAFE_MS = 9_000;
 
 const REDUCED = "(prefers-reduced-motion: reduce)";
-const subscribeMotion = (onChange: () => void) => {
-  const query = window.matchMedia(REDUCED);
-  if (typeof query.addEventListener === "function") {
-    query.addEventListener("change", onChange);
-    return () => query.removeEventListener("change", onChange);
+const DESKTOP_QUERY = "(min-width: 1024px)";
+
+const subscribeMedia = (query: string, onChange: () => void) => {
+  const media = window.matchMedia(query);
+  if (typeof media.addEventListener === "function") {
+    media.addEventListener("change", onChange);
+    return () => media.removeEventListener("change", onChange);
   }
 
   // Safari before 14 exposes only the legacy MediaQueryList listener API.
-  query.addListener(onChange);
-  return () => query.removeListener(onChange);
+  media.addListener(onChange);
+  return () => media.removeListener(onChange);
 };
 
-const DESKTOP_QUERY = "(min-width: 1024px)";
-const subscribeViewport = (onChange: () => void) => {
-  const query = window.matchMedia(DESKTOP_QUERY);
-  if (typeof query.addEventListener === "function") {
-    query.addEventListener("change", onChange);
-    return () => query.removeEventListener("change", onChange);
-  }
-
-  query.addListener(onChange);
-  return () => query.removeListener(onChange);
-};
+const subscribeMotion = (onChange: () => void) =>
+  subscribeMedia(REDUCED, onChange);
+const subscribeViewport = (onChange: () => void) =>
+  subscribeMedia(DESKTOP_QUERY, onChange);
+const subscribeBrowserIdentity = () => () => undefined;
 
 export function LogoLoader() {
-  const player = useRef<PlayerRef>(null);
   const prefersReduced = useSyncExternalStore(
     subscribeMotion,
     () => window.matchMedia(REDUCED).matches,
     () => false,
   );
-  /**
-   * Null on the server on purpose. Any guess here would be wrong half the
-   * time, and a wrong guess of "desktop" sends a phone after the full-size
-   * bitmaps — several megabytes it then never uses — before the real value
-   * arrives. Nothing is fetched until the client knows which set it needs.
-   */
-  const quality = useSyncExternalStore<LayerQuality | null>(
+  const desktop = useSyncExternalStore<boolean | null>(
     subscribeViewport,
-    () => (window.matchMedia(DESKTOP_QUERY).matches ? "full" : "compact"),
+    () => window.matchMedia(DESKTOP_QUERY).matches,
     () => null,
   );
-  const [loaded, setLoaded] = useState(0);
-  const [armed, setArmed] = useState(false);
+  const macOSSafari = useSyncExternalStore(
+    subscribeBrowserIdentity,
+    () =>
+      isMacOSSafari({
+        userAgent: navigator.userAgent,
+        maxTouchPoints: navigator.maxTouchPoints,
+      }),
+    () => false,
+  );
+  const [ready, setReady] = useState(false);
   const [showHold, setShowHold] = useState(false);
   const [ended, setEnded] = useState(false);
   const [timedOut, setTimedOut] = useState(false);
   const [gone, setGone] = useState(false);
 
-  const sources = useMemo(
-    () => (quality ? ALL_LAYERS.map((layer) => sourceFor(layer.src, quality)) : []),
-    [quality],
-  );
-  const finished = ended || prefersReduced || timedOut;
-  const { width, height } = quality === "compact" ? MOBILE_SIZE : DESKTOP_SIZE;
+  const skipAnimation = macOSSafari || prefersReduced;
+  const finished = skipAnimation || ended || timedOut;
+  const source = desktop === null ? null : desktop ? DESKTOP_VIDEO : MOBILE_VIDEO;
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setTimedOut(true), FAILSAFE_MS);
-    return () => window.clearTimeout(timer);
-  }, []);
+    if (skipAnimation) return;
 
-  useEffect(() => {
-    if (prefersReduced || !quality) return;
-    // `quality` is resolved once, so this runs once: no counters to reset.
-    let live = true;
-
-    // A slow connection gets no intro rather than a broken one. Starting it
-    // with parts missing is the bug this preload exists to fix, so past the
-    // budget the loader simply steps aside and hands over the site.
-    const budget = window.setTimeout(() => {
-      if (live) setTimedOut(true);
-    }, PRELOAD_BUDGET_MS);
-    const reveal = window.setTimeout(() => {
-      if (live) setShowHold(true);
-    }, HOLD_REVEAL_MS);
-
-    void Promise.all(
-      sources.map(
-        (src) =>
-          new Promise<void>((resolve) => {
-            const image = new Image();
-            const done = () => {
-              if (live) setLoaded((count) => count + 1);
-              resolve();
-            };
-            image.onload = done;
-            image.onerror = done;
-            image.src = src;
-          }),
-      ),
-    ).then(() => {
-      if (!live) return;
-      // The artwork is here, so the give-up timer has nothing left to do.
-      window.clearTimeout(budget);
-      setArmed(true);
-    });
-
+    const reveal = window.setTimeout(() => setShowHold(true), HOLD_REVEAL_MS);
+    const failsafe = window.setTimeout(() => setTimedOut(true), FAILSAFE_MS);
     return () => {
-      live = false;
-      window.clearTimeout(budget);
       window.clearTimeout(reveal);
+      window.clearTimeout(failsafe);
     };
-  }, [prefersReduced, quality, sources]);
+  }, [skipAnimation]);
 
   useEffect(() => {
-    const instance = player.current;
-    if (!instance || prefersReduced) return;
-
-    const onEnded = () => setEnded(true);
-    instance.addEventListener("ended", onEnded);
-    return () => instance.removeEventListener("ended", onEnded);
-  }, [armed, prefersReduced]);
-
-  useEffect(() => {
-    if (!finished) return;
+    if (!finished || skipAnimation) return;
     const timer = window.setTimeout(() => setGone(true), FADE_MS);
     return () => window.clearTimeout(timer);
-  }, [finished]);
+  }, [finished, skipAnimation]);
 
   useEffect(() => {
-    if (gone) return;
+    if (gone || skipAnimation) return;
     const { overflow } = document.body.style;
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = overflow;
     };
-  }, [gone]);
+  }, [gone, skipAnimation]);
 
-  if (gone) return null;
-
-  const progress = sources.length ? loaded / sources.length : 1;
+  if (gone || skipAnimation) return null;
 
   return (
     <div
@@ -175,40 +106,36 @@ export function LogoLoader() {
         pointerEvents: finished ? "none" : "auto",
       }}
     >
-      {!prefersReduced && armed && quality ? (
-        <Player
-          ref={player}
-          component={MarthasLogo}
-          inputProps={{
-            quality,
-            artworkWidth: quality === "full" ? DESKTOP_ARTWORK_WIDTH : "92%",
-          }}
-          // DURATION keeps its tail for the offline render; on the site the
-          // intro leaves as soon as the scene has settled.
-          durationInFrames={Math.min(SETTLED, DURATION)}
-          compositionWidth={width}
-          compositionHeight={height}
-          fps={30}
+      {!skipAnimation && source ? (
+        <video
+          key={source}
+          src={source}
           autoPlay
-          loop={false}
-          initiallyMuted
-          controls={false}
-          clickToPlay={false}
+          muted
+          playsInline
+          preload="auto"
+          onCanPlay={() => setReady(true)}
+          onEnded={() => setEnded(true)}
+          onError={() => setTimedOut(true)}
           style={{
+            display: "block",
             width: "100%",
             height: "100%",
+            objectFit: "contain",
             background: CREAM,
           }}
         />
       ) : null}
 
-      {!prefersReduced && !armed ? (
+      {!skipAnimation && !ready ? (
         <span
           style={{
+            position: "absolute",
             display: "block",
             width: "112px",
             height: "1px",
-            background: `rgba(31, 23, 21, 0.18)`,
+            overflow: "hidden",
+            background: "rgba(31, 23, 21, 0.18)",
             opacity: showHold ? 1 : 0,
             transition: "opacity 400ms ease",
           }}
@@ -216,10 +143,11 @@ export function LogoLoader() {
           <span
             style={{
               display: "block",
+              width: "100%",
               height: "100%",
-              width: `${Math.round(progress * 100)}%`,
               background: INK,
-              transition: "width 220ms ease",
+              transformOrigin: "left center",
+              animation: "logo-loader-hold 900ms ease-in-out infinite alternate",
             }}
           />
         </span>

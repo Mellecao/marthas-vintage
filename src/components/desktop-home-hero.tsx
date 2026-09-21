@@ -3,6 +3,7 @@
 import { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { isMacOSSafari } from "@/lib/browser";
 
 const MARTHAS_LOGO = "/assets/site/desktop-home/marthas-word.svg";
 const VINTAGE_LOGO = "/assets/site/desktop-home/vintage-word.svg";
@@ -31,6 +32,10 @@ export function DesktopHomeHero({
     gsap.registerPlugin(ScrollTrigger);
     const element = root.current;
     if (!element) return;
+    const macOSSafari = isMacOSSafari({
+      userAgent: navigator.userAgent,
+      maxTouchPoints: navigator.maxTouchPoints,
+    });
 
     const context = gsap.context(() => {
       const media = gsap.matchMedia();
@@ -67,15 +72,17 @@ export function DesktopHomeHero({
             return;
           }
 
-          // Keep the very same hero navigation and lettering after pin release.
+          // Keep the same hero navigation and lettering after the hero leaves.
           // Nothing is duplicated or crossfaded into a different menu.
           const nav = element.querySelector<HTMLElement>(".desktop-home-nav");
           const persistent = document.createElement("div");
           persistent.className = "persistent-hero-menu";
           persistent.hidden = true;
           document.body.appendChild(persistent);
-          const originals = [marthas, vintage, ...(nav ? [nav] : [])].map(node => ({
-            node, parent: node.parentNode!, next: node.nextSibling,
+          const originals = [marthas, vintage, ...(nav ? [nav] : [])].map((node) => ({
+            node,
+            parent: node.parentNode!,
+            next: node.nextSibling,
           }));
           let moved = false;
           let lastMenuScroll = window.scrollY;
@@ -89,9 +96,14 @@ export function DesktopHomeHero({
             moved = active;
             if (active) {
               persistent.hidden = false;
-              originals.forEach(({node}) => persistent.appendChild(node));
+              originals.forEach(({ node }) => persistent.appendChild(node));
             } else {
-              originals.slice().reverse().forEach(({node, parent, next}) => parent.insertBefore(node, next?.parentNode === parent ? next : null));
+              originals
+                .slice()
+                .reverse()
+                .forEach(({ node, parent, next }) =>
+                  parent.insertBefore(node, next?.parentNode === parent ? next : null),
+                );
               persistent.hidden = true;
               setMenuCollapsed(false);
             }
@@ -105,29 +117,92 @@ export function DesktopHomeHero({
             }
             lastMenuScroll = scroll;
           };
-          const disposeMenu = () => { handoff(false); persistent.remove(); };
+          const disposeMenu = () => {
+            handoff(false);
+            persistent.remove();
+          };
 
-          const finalState = () => {
-            gsap.set(marthas, { left: "37.109375%", top: "3.25%", width: "12.4%", height: "7.35%", objectPosition: "100% 50%" });
-            gsap.set(vintage, { left: "49.859375%", top: "3.25%", width: "12.8%", height: "7.35%", objectPosition: "0% 50%" });
+          const setMenuLayout = () => {
+            gsap.set(marthas, {
+              left: "37.109375%",
+              top: "3.25%",
+              width: "12.4%",
+              height: "7.35%",
+              objectPosition: "100% 50%",
+            });
+            gsap.set(vintage, {
+              left: "49.859375%",
+              top: "3.25%",
+              width: "12.8%",
+              height: "7.35%",
+              objectPosition: "0% 50%",
+            });
             gsap.set(links[0], { left: "6.328125%", top: "5.2%" });
             gsap.set(links[1], { left: "15.3125%", top: "5.2%" });
             gsap.set(links[2], { left: "66.171875%", top: "5.2%" });
             gsap.set(links[3], { left: "84.609375%", top: "5.2%" });
             gsap.set(leaders, { autoAlpha: 0, scaleX: 0 });
-            gsap.set(description, { autoAlpha: 0, y: 44 });
-            gsap.set(butterfly, { autoAlpha: 0, x: "24vw", y: "-28vh", rotation: 28, scale: 0.72 });
-            gsap.set(photo, { left: "0%", width: "100%" });
           };
+          const clearMenuLayout = () => {
+            gsap.set([marthas, vintage, ...links, ...leaders], { clearProps: "all" });
+          };
+          const finalState = () => {
+            setMenuLayout();
+            gsap.set(description, { autoAlpha: 0, y: 44 });
+            gsap.set(butterfly, {
+              autoAlpha: 0,
+              x: "24vw",
+              y: "-28vh",
+              rotation: 28,
+              scale: 0.72,
+            });
+            gsap.set(photo, { clipPath: "inset(0% 0% 0% 0%)" });
+          };
+
+          if (macOSSafari) {
+            let frame = 0;
+            const syncSafariMenu = () => {
+              frame = 0;
+              const pastHero = element.getBoundingClientRect().bottom <= 1;
+              if (pastHero) {
+                handoff(true);
+                setMenuLayout();
+                setMenuCollapsed(false);
+              } else if (moved) {
+                handoff(false);
+                clearMenuLayout();
+              }
+            };
+            const requestSync = () => {
+              if (!frame) frame = window.requestAnimationFrame(syncSafariMenu);
+            };
+
+            syncSafariMenu();
+            window.addEventListener("scroll", requestSync, { passive: true });
+            window.addEventListener("resize", requestSync);
+            return () => {
+              window.removeEventListener("scroll", requestSync);
+              window.removeEventListener("resize", requestSync);
+              if (frame) window.cancelAnimationFrame(frame);
+              handoff(false);
+              clearMenuLayout();
+              persistent.remove();
+            };
+          }
 
           if (conditions.reduce) {
             finalState();
             const menuTrigger = ScrollTrigger.create({
-              trigger: element, start: "bottom top", end: "max",
-              onUpdate: self => updateMenu(self),
-              onRefresh: self => updateMenu(self, true),
+              trigger: element,
+              start: "bottom top",
+              end: "max",
+              onUpdate: (self) => updateMenu(self),
+              onRefresh: (self) => updateMenu(self, true),
             });
-            return () => { menuTrigger.kill(); disposeMenu(); };
+            return () => {
+              menuTrigger.kill();
+              disposeMenu();
+            };
           }
 
           const timeline = gsap.timeline({
@@ -181,15 +256,18 @@ export function DesktopHomeHero({
               yoyo: true,
               repeat: 5,
             }, 0.03)
-            // Explicit percentage start/end values survive refresh at any progress.
-            // A numeric zero made GSAP cache the photo's initial left in pixels,
-            // leaving it detached from the percentage-positioned butterfly on resize.
-            .fromTo(photo, { left: "34.0625%", width: "30.234375%" }, {
-              left: "0%",
-              width: "100%",
-              immediateRender: false,
-              duration: 0.58,
-            }, 0.42)
+            // Reveal a stable full-width image with a crop instead of animating
+            // left/width. This avoids layout and the 116vw photo is painted once.
+            .fromTo(
+              photo,
+              { clipPath: "inset(0% 35.703125% 0% 34.0625%)" },
+              {
+                clipPath: "inset(0% 0% 0% 0%)",
+                immediateRender: false,
+                duration: 0.58,
+              },
+              0.42,
+            )
             .to({}, { duration: 0.18 });
 
           const menuTrigger = ScrollTrigger.create({

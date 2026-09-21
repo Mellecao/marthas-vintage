@@ -42,7 +42,11 @@ try {
   await send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: "no-preference" }] });
   await send("Page.navigate", { url });
   await wait(1000);
-  await evaluate("document.querySelector('[data-logo-loader]')?.remove()");
+  await evaluate(`(() => {
+    const style = document.createElement('style');
+    style.textContent = '[data-logo-loader]{display:none!important;pointer-events:none!important}';
+    document.head.appendChild(style);
+  })()`);
   await evaluate(`window.scrollTo({ top: ${Math.ceil(height * 2.2)}, behavior: 'instant' })`);
   await wait(900);
   await evaluate(`window.scrollTo({ top: ${Math.ceil(height * 2.05)}, behavior: 'instant' })`);
@@ -66,12 +70,21 @@ try {
       rects,
       targetRect: target?.getBoundingClientRect().toJSON(),
       href: target?.getAttribute('href'),
+      hitStack: target ? document.elementsFromPoint(
+        target.getBoundingClientRect().left + target.getBoundingClientRect().width / 2,
+        target.getBoundingClientRect().top + target.getBoundingClientRect().height / 2,
+      ).slice(0, 6).map((node) => ({
+        tag: node.tagName,
+        className: typeof node.className === 'string' ? node.className : '',
+        pointerEvents: getComputedStyle(node).pointerEvents,
+      })) : [],
       labelTransform: label ? getComputedStyle(label).transform : null,
       underlineTransform: label ? getComputedStyle(label, '::after').transform : null,
       color: target ? getComputedStyle(target).color : null,
     };
   })())`));
 
+  console.log(JSON.stringify({ stage: "before-hover", viewport: { width, height }, before }, null, 2));
   assert.equal(before.menuVisible, true, "persistent desktop menu did not reveal after upward scroll");
   assert.equal(before.pointerFine, true, "desktop hover media query is not active");
   assert.equal(before.linkCount, 4);

@@ -5,6 +5,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 import { useLayoutEffect, useRef } from "react";
 import { TEXTILE_STORIES } from "@/data/textile-cargo";
+import { isMacOSSafari } from "@/lib/browser";
 import { TextileOutline } from "./stitch-outline";
 import styles from "./textile-cargo.module.css";
 
@@ -29,6 +30,22 @@ export function ChapterTrack() {
     const track = trackRef.current;
     const path = pathRef.current;
     if (!stage || !track || !path) return;
+
+    // WebKit can leave native-lazy images inside a transformed, pinned rail in
+    // a permanently broken state. These are small pre-optimized JPEGs, so only
+    // macOS Safari promotes the rail to eager loading before scroll starts.
+    if (
+      isMacOSSafari({
+        userAgent: navigator.userAgent,
+        maxTouchPoints: navigator.maxTouchPoints,
+      })
+    ) {
+      stage
+        .querySelectorAll<HTMLImageElement>("img[data-chapter-image]")
+        .forEach((image) => {
+          image.loading = "eager";
+        });
+    }
 
     const context = gsap.context(() => {
       const media = gsap.matchMedia();
@@ -91,11 +108,14 @@ export function ChapterTrack() {
               {story.images.map((image, imageIndex) => (
                 <figure key={image.src} className={styles.chapterFigure}>
                   <Image
+                    data-chapter-image=""
                     src={image.src}
                     alt={image.alt}
                     fill
                     sizes="(min-width: 1024px) 26vw, 82vw"
-                    quality={92}
+                    loading={index === 0 ? "eager" : "lazy"}
+                    fetchPriority={index === 0 ? "low" : undefined}
+                    unoptimized
                     style={{ objectPosition: image.position }}
                   />
                   <TextileOutline variant={imageIndex % 2 === 0 ? "a" : "b"} />

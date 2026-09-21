@@ -13,8 +13,10 @@ export type TextileStory = {
   images: TextileStoryImage[];
 };
 
-const gallery = (name: string) => `/assets/site/textile-cargo/gallery/${name}`;
-const detail = (name: string) => `/assets/site/textile-cargo/details/${name}`;
+const gallery = (name: string) =>
+  `/assets/site/textile-cargo/gallery/optimized/${name}`;
+const detail = (name: string) =>
+  `/assets/site/textile-cargo/details/optimized/${name}`;
 
 export const TEXTILE_STORIES: TextileStory[] = [
   {

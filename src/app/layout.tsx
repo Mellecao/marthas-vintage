@@ -6,6 +6,7 @@ import {
   Suravaram,
 } from "next/font/google";
 import { LogoLoader } from "@/components/logo-loader";
+import { MACOS_SAFARI_BOOTSTRAP } from "@/lib/browser";
 import "./globals.css";
 import "./vintage-details.css";
 
@@ -42,8 +43,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${geist.variable} ${diplomata.variable} ${poltawski.variable} ${suravaram.variable}`}
     >
+      <head>
+        <script
+          id="macos-safari-mode"
+          dangerouslySetInnerHTML={{ __html: MACOS_SAFARI_BOOTSTRAP }}
+        />
+      </head>
       <body>
         <LogoLoader />
         {children}
