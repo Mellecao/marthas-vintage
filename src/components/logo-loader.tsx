@@ -3,7 +3,7 @@
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { isMacOSSafari } from "@/lib/browser";
 
-const CREAM = "#f6efe2";
+const LOADER_BG = "#ffffff";
 const INK = "#1f1715";
 const DESKTOP_VIDEO = "/assets/site/marthas-loader-desktop.mp4";
 const MOBILE_VIDEO = "/assets/site/marthas-loader-mobile.mp4";
@@ -98,7 +98,7 @@ export function LogoLoader() {
         position: "fixed",
         inset: 0,
         zIndex: 100,
-        background: CREAM,
+        background: LOADER_BG,
         display: "grid",
         placeItems: "center",
         opacity: finished ? 0 : 1,
@@ -118,14 +118,12 @@ export function LogoLoader() {
           onEnded={() => setEnded(true)}
           onError={() => setTimedOut(true)}
           style={{
-            position: "absolute",
-            inset: 0,
             display: "block",
-            width: "100%",
-            height: "100%",
+            width: "46%",
+            height: "46%",
             objectFit: "contain",
             objectPosition: "center",
-            background: CREAM,
+            background: LOADER_BG,
           }}
         />
       ) : null}
