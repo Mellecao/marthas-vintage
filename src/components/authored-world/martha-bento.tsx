@@ -57,21 +57,13 @@ export function MarthaBento() {
           <figcaption>Personal before conventional.</figcaption>
         </figure>
 
-        <article className={`${styles.bentoCell} ${styles.locationCell}`}>
+        <article data-location-card className={`${styles.bentoCell} ${styles.locationCell}`}>
           <StitchOutline variant="wide" />
           <p className={styles.cellLabel}>From Bastrop, Texas</p>
           <p>
             Clothing sits beside textiles, jewelry, art and beautiful oddities because Martha sees them as one conversation.
           </p>
         </article>
-
-        <div className={`${styles.bentoCell} ${styles.colorCell}`} aria-label="Colors recurring through Martha's collection">
-          <span style={{ background: "#b8323c" }} />
-          <span style={{ background: "#2c6663" }} />
-          <span style={{ background: "#c59a3d" }} />
-          <span style={{ background: "#66304c" }} />
-          <p>Chosen by instinct,<br />connected by eye.</p>
-        </div>
       </div>
     </section>
   );

@@ -71,13 +71,23 @@ try {
   const loader = await read(`(() => {
     const root = document.querySelector('[data-logo-loader]');
     const video = root?.querySelector('video');
+    const videoRect = video?.getBoundingClientRect();
     return {
       location: window.location.href,
       title: document.title,
       userAgent: navigator.userAgent,
       safariMode: document.documentElement.dataset.macosSafari,
+      viewport: { width: innerWidth, height: innerHeight },
       present: Boolean(root),
       videoPresent: Boolean(video),
+      videoRect: videoRect
+        ? {
+            x: videoRect.x,
+            y: videoRect.y,
+            width: videoRect.width,
+            height: videoRect.height,
+          }
+        : null,
       videoSrc: video?.currentSrc || video?.getAttribute('src') || '',
       remotionImages: root?.querySelectorAll('img').length ?? 0,
     };
@@ -86,6 +96,16 @@ try {
   assert.equal(loader.present, true, "the regular-browser loading screen disappeared unexpectedly");
   assert.equal(loader.videoPresent, true, "the loading animation is not using a pre-rendered video");
   assert.match(loader.videoSrc, /marthas-loader-desktop\.mp4/);
+  assert.ok(loader.videoRect, "the desktop loader video has no layout box");
+  assert.ok(
+    Math.abs(loader.videoRect.x) <= 1 && Math.abs(loader.videoRect.y) <= 1,
+    "the desktop loader video is not anchored to the viewport origin",
+  );
+  assert.ok(
+    Math.abs(loader.videoRect.width - loader.viewport.width) <= 1 &&
+      Math.abs(loader.videoRect.height - loader.viewport.height) <= 1,
+    "the desktop loader video overflows the viewport and shifts the artwork off-center",
+  );
   assert.equal(loader.remotionImages, 0, "the runtime loader still renders layered logo bitmaps");
   assert.equal(layerRequests.length, 0, "the loader still downloads the 36 Remotion layer images");
 
@@ -93,9 +113,12 @@ try {
   await evaluate("document.documentElement.style.scrollBehavior = 'auto'; true");
   const initial = await read(`(() => {
     const photo = document.querySelector('[data-desktop-photo]');
+    const butterfly = document.querySelector('[data-desktop-butterfly]');
     return {
       rect: photo?.getBoundingClientRect().toJSON(),
       clipPath: photo ? getComputedStyle(photo).clipPath : null,
+      butterflyTransform: butterfly ? getComputedStyle(butterfly).transform : null,
+      butterflyWingCount: document.querySelectorAll('[data-desktop-butterfly-wing]').length,
     };
   })()`);
 
@@ -103,15 +126,23 @@ try {
   await wait(600);
   const middle = await read(`(() => {
     const photo = document.querySelector('[data-desktop-photo]');
+    const butterfly = document.querySelector('[data-desktop-butterfly]');
     return {
       rect: photo?.getBoundingClientRect().toJSON(),
       clipPath: photo ? getComputedStyle(photo).clipPath : null,
+      butterflyTransform: butterfly ? getComputedStyle(butterfly).transform : null,
     };
   })()`);
 
   assert.ok(initial.rect.width >= 1439, "the hero photo does not use a stable full-width layer");
   assert.ok(Math.abs(middle.rect.width - initial.rect.width) <= 1, "the hero animation still changes layout width");
   assert.notEqual(middle.clipPath, initial.clipPath, "the optimized hero crop did not animate");
+  assert.equal(initial.butterflyWingCount, 0, "the hero still duplicates and flaps butterfly wings");
+  assert.notEqual(
+    middle.butterflyTransform,
+    initial.butterflyTransform,
+    "the simplified butterfly no longer slides with the hero",
+  );
   assert.equal(runtimeErrors.length, 0, "runtime exceptions were raised");
 
   console.log(JSON.stringify({ status: "PASS", loader, initial, middle, layerRequests: layerRequests.length }, null, 2));

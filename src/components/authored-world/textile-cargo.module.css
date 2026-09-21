@@ -582,7 +582,7 @@
 }
 
 .locationCell {
-  grid-column: 5 / span 5;
+  grid-column: 5 / span 8;
   grid-row: 7 / span 3;
   padding: clamp(25px, 2.7vw, 48px);
   color: var(--tc-surface);
@@ -598,29 +598,21 @@
   line-height: 1.22;
 }
 
-.colorCell {
-  grid-column: 10 / span 3;
-  grid-row: 7 / span 3;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr) auto;
-  overflow: hidden;
-  clip-path: polygon(3% 8%, 94% 1%, 99% 88%, 82% 99%, 6% 93%);
-}
+@media (min-width: 1024px) {
+  .locationCell {
+    padding: clamp(30px, 3.15vw, 56px);
+  }
 
-.colorCell > span {
-  display: block;
-}
+  .locationCell .cellLabel {
+    font-size: clamp(12px, 0.82vw, 15px);
+  }
 
-.colorCell p {
-  grid-column: 1 / -1;
-  margin: 0;
-  padding: 14px 16px;
-  color: var(--tc-surface);
-  font-family: var(--font-poltawski), Georgia, serif;
-  font-size: clamp(16px, 1.15vw, 21px);
-  line-height: 1.12;
-  background: var(--tc-ink);
+  .locationCell > p:last-child {
+    max-width: 44ch;
+    margin-top: clamp(26px, 2.4vw, 44px);
+    font-size: clamp(24px, 2.05vw, 38px);
+    line-height: 1.16;
+  }
 }
 
 .chapterSection {
@@ -734,6 +726,10 @@
 
 .roadline {
   display: none;
+}
+
+:global(html[data-macos-safari="true"]) .roadline {
+  display: none !important;
 }
 
 @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {

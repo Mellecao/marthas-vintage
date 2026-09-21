@@ -256,26 +256,11 @@ html[data-macos-safari="true"] [data-logo-loader] {
     height: 15.5%;
     will-change: transform, opacity;
   }
-  .desktop-butterfly-wing {
-    position: absolute;
-    inset: 0;
-    display: block;
-    overflow: hidden;
-    will-change: transform;
-  }
-  .desktop-butterfly-wing img {
+  .desktop-home-butterfly > img {
     display: block;
     width: 100%;
     height: 100%;
     object-fit: contain;
-  }
-  .desktop-butterfly-wing-left {
-    clip-path: inset(0 50% 0 0);
-    transform-origin: 50% 50%;
-  }
-  .desktop-butterfly-wing-right {
-    clip-path: inset(0 0 0 50%);
-    transform-origin: 50% 50%;
   }
 
   .desktop-discover {

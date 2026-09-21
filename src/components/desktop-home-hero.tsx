@@ -56,9 +56,6 @@ export function DesktopHomeHero({
           const vintage = element.querySelector<HTMLElement>("[data-brand-vintage]");
           const description = element.querySelector<HTMLElement>("[data-desktop-description]");
           const butterfly = element.querySelector<HTMLElement>("[data-desktop-butterfly]");
-          const butterflyWings = Array.from(
-            element.querySelectorAll<HTMLElement>("[data-desktop-butterfly-wing]"),
-          );
           const photo = element.querySelector<HTMLElement>("[data-desktop-photo]");
           const discover = element.querySelector<HTMLElement>("[data-desktop-discover]");
           const links = Array.from(
@@ -249,13 +246,6 @@ export function DesktopHomeHero({
               scale: 0.72,
               duration: 0.34,
             }, 0.03)
-            .to(butterflyWings, {
-              scaleX: 0.32,
-              duration: 0.055,
-              ease: "sine.inOut",
-              yoyo: true,
-              repeat: 5,
-            }, 0.03)
             // Reveal a stable full-width image with a crop instead of animating
             // left/width. This avoids layout and the 116vw photo is painted once.
             .fromTo(
@@ -339,12 +329,7 @@ export function DesktopHomeHero({
         data-desktop-butterfly
         aria-hidden="true"
       >
-        <span className="desktop-butterfly-wing desktop-butterfly-wing-left" data-desktop-butterfly-wing>
-          <img src={BUTTERFLY} alt="" />
-        </span>
-        <span className="desktop-butterfly-wing desktop-butterfly-wing-right" data-desktop-butterfly-wing>
-          <img src={BUTTERFLY} alt="" />
-        </span>
+        <img src={BUTTERFLY} alt="" />
       </span>
 
       <a className="desktop-discover" data-desktop-discover href="#desktop-marthas-eyes">

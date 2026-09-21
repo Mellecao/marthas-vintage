@@ -152,11 +152,21 @@ try {
 
   await evaluate("document.querySelector('#collection').scrollIntoView({block:'start'}); true");
   await wait(1_200);
-  const chapterImages = await read(`([...document.querySelectorAll('[data-chapter-image]')].map(img => ({
-    src: img.currentSrc || img.src,
-    complete: img.complete,
-    naturalWidth: img.naturalWidth,
-  })))`);
+  const chapterState = await read(`(() => {
+    const roadline = [...document.querySelectorAll('#collection svg')].find((svg) =>
+      [...svg.classList].some((name) => name.includes('roadline'))
+    );
+    return {
+      images: [...document.querySelectorAll('[data-chapter-image]')].map(img => ({
+        src: img.currentSrc || img.src,
+        complete: img.complete,
+        naturalWidth: img.naturalWidth,
+      })),
+      roadlineDisplay: roadline ? getComputedStyle(roadline).display : null,
+    };
+  })()`);
+  const chapterImages = chapterState.images;
+  assert.equal(chapterState.roadlineDisplay, "none", "the horizontal roadline remains visible in macOS Safari");
   assert.equal(chapterImages.length, 9, "the horizontal chapter must expose all nine photos");
   assert.ok(
     chapterImages.every((image) => image.complete && image.naturalWidth > 0),
@@ -166,7 +176,7 @@ try {
   assert.equal(runtimeErrors.length, 0, "runtime exceptions were raised");
   assert.deepEqual(badResponses, [], "browser received HTTP error responses");
 
-  console.log(JSON.stringify({ status: "PASS", initial, middle, secondSection, chapterImages }, null, 2));
+  console.log(JSON.stringify({ status: "PASS", initial, middle, secondSection, chapterState }, null, 2));
 } finally {
   socket.close();
 }

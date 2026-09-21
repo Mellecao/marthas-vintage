@@ -118,10 +118,13 @@ export function LogoLoader() {
           onEnded={() => setEnded(true)}
           onError={() => setTimedOut(true)}
           style={{
+            position: "absolute",
+            inset: 0,
             display: "block",
             width: "100%",
             height: "100%",
             objectFit: "contain",
+            objectPosition: "center",
             background: CREAM,
           }}
         />

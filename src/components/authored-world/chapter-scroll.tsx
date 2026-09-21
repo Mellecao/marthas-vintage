@@ -31,15 +31,15 @@ export function ChapterTrack() {
     const path = pathRef.current;
     if (!stage || !track || !path) return;
 
+    const macOSSafari = isMacOSSafari({
+      userAgent: navigator.userAgent,
+      maxTouchPoints: navigator.maxTouchPoints,
+    });
+
     // WebKit can leave native-lazy images inside a transformed, pinned rail in
     // a permanently broken state. These are small pre-optimized JPEGs, so only
     // macOS Safari promotes the rail to eager loading before scroll starts.
-    if (
-      isMacOSSafari({
-        userAgent: navigator.userAgent,
-        maxTouchPoints: navigator.maxTouchPoints,
-      })
-    ) {
+    if (macOSSafari) {
       stage
         .querySelectorAll<HTMLImageElement>("img[data-chapter-image]")
         .forEach((image) => {
@@ -51,9 +51,11 @@ export function ChapterTrack() {
       const media = gsap.matchMedia();
 
       media.add("(min-width: 1024px) and (prefers-reduced-motion: no-preference)", () => {
-        const length = path.getTotalLength();
-        path.style.strokeDasharray = `${length}`;
-        path.style.strokeDashoffset = `${length}`;
+        const length = macOSSafari ? 0 : path.getTotalLength();
+        if (!macOSSafari) {
+          path.style.strokeDasharray = `${length}`;
+          path.style.strokeDashoffset = `${length}`;
+        }
 
         const timeline = gsap.to(track, {
           x: () => -(track.scrollWidth - window.innerWidth),
@@ -65,9 +67,11 @@ export function ChapterTrack() {
             pin: true,
             scrub: 0.6,
             invalidateOnRefresh: true,
-            onUpdate: (self) => {
-              path.style.strokeDashoffset = `${length * (1 - self.progress)}`;
-            },
+            onUpdate: macOSSafari
+              ? undefined
+              : (self) => {
+                  path.style.strokeDashoffset = `${length * (1 - self.progress)}`;
+                },
           },
         });
 
