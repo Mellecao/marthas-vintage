@@ -11,12 +11,17 @@
 
 :root {
   --background: var(--paper);
+  --loader-bg: #fffff5;
   --paper: #fbf1de;
   --ink: #1f1715;
   --brown: #251e18;
   --cream-ink: #e7d8c2;
   --marquee: #a99b8c;
   --frame-line: #363636;
+}
+
+@media (max-width: 1023px) {
+  :root { --loader-bg: #f7efe4; }
 }
 
 * { box-sizing: border-box; }
@@ -75,6 +80,20 @@ html[data-macos-safari="true"] [data-logo-loader] {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+.ios-safe-arrow {
+  display: inline-block;
+  width: 0.52em;
+  height: 0.52em;
+  margin-left: 0.35em;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  vertical-align: 0.16em;
+}
+
+.ios-safe-arrow-down {
+  transform: rotate(45deg);
 }
 
 .site-shell {

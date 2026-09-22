@@ -3,7 +3,7 @@
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { isMacOSSafari } from "@/lib/browser";
 
-const LOADER_BG = "#fffff5";
+const LOADER_BG = "var(--loader-bg)";
 const INK = "#1f1715";
 const DESKTOP_VIDEO = "/assets/site/marthas-loader-desktop.mp4";
 const MOBILE_VIDEO = "/assets/site/marthas-loader-mobile.mp4";

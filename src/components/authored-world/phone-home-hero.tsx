@@ -99,7 +99,7 @@ export function PhoneHomeHero({ imageSrc, imageAlt }: PhoneHomeHeroProps) {
       <span className={styles.phoneRule} aria-hidden="true" />
 
       <a className={styles.phoneDiscover} href="#marthas-eyes">
-        Discover the story <span aria-hidden="true">↓</span>
+        Discover the story <span className="ios-safe-arrow ios-safe-arrow-down" aria-hidden="true" />
       </a>
     </section>
   );

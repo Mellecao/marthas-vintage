@@ -7,6 +7,24 @@ import { StoryChapters } from "./story-chapters";
 import { TextileOutline } from "./stitch-outline";
 import styles from "./textile-cargo.module.css";
 
+function InstagramIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <rect x="3.25" y="3.25" width="17.5" height="17.5" rx="5" />
+      <circle cx="12" cy="12" r="4.1" />
+      <circle cx="17.35" cy="6.65" r="1" className={styles.socialIconDot} />
+    </svg>
+  );
+}
+
+function FacebookIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M13.65 20v-7.1h2.38l.36-2.76h-2.74V8.38c0-.8.22-1.34 1.38-1.34h1.47V4.57c-.26-.04-1.15-.11-2.2-.11-2.18 0-3.67 1.33-3.67 3.77v1.91H8.17v2.76h2.46V20h3.02Z" />
+    </svg>
+  );
+}
+
 export function AuthoredWorldPage() {
   return (
     <div className={styles.page}>
@@ -91,13 +109,28 @@ export function AuthoredWorldPage() {
             <h2>Come see what caught her eye.</h2>
           </div>
           <div>
-            <p>Vintage clothing, textiles, art and beautiful oddities.</p>
-            <a
-              href="https://www.google.com/maps/search/?api=1&query=Martha%27s%20Vintage%20Bastrop%20Texas"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Find Martha’s Vintage ↗
+            <div className={styles.socialLinks}>
+              <a
+                className={styles.socialLink}
+                href="https://www.instagram.com/marthasvintagecollection?stkn=MTVzajkzc3NtcGQ1aQ%3D%3D"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Martha's Vintage on Instagram"
+              >
+                <InstagramIcon />
+              </a>
+              <a
+                className={styles.socialLink}
+                href="https://www.facebook.com/share/1HCPw9kDxe/?mibextid=wwXIfr"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Martha's Vintage on Facebook"
+              >
+                <FacebookIcon />
+              </a>
+            </div>
+            <a className={styles.emailLink} href="mailto:shopmarthasvintagecollection@gmail.com">
+              shopmarthasvintagecollection@gmail.com
             </a>
           </div>
         </footer>

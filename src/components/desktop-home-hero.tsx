@@ -333,7 +333,7 @@ export function DesktopHomeHero({
       </span>
 
       <a className="desktop-discover" data-desktop-discover href="#desktop-marthas-eyes">
-        Discover the story <span aria-hidden="true">↓</span>
+        Discover the story <span className="ios-safe-arrow ios-safe-arrow-down" aria-hidden="true" />
       </a>
     </section>
   );

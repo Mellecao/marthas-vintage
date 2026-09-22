@@ -1074,6 +1074,54 @@
   margin-top: 20px;
 }
 
+.socialLinks {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.socialLink {
+  display: grid !important;
+  width: 44px;
+  height: 44px;
+  margin-top: 0 !important;
+  place-items: center;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  transition: color 160ms ease, background-color 160ms ease;
+}
+
+.socialLink:hover,
+.socialLink:focus-visible {
+  color: var(--tc-mustard);
+  background: var(--tc-ink);
+}
+
+.socialLink svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.socialLink svg path {
+  fill: currentColor;
+  stroke: none;
+}
+
+.socialIconDot {
+  fill: currentColor;
+  stroke: none;
+}
+
+.emailLink {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
 @media (max-width: 1023px) {
   .fixedTexture {
     position: absolute;
@@ -1250,6 +1298,10 @@
 
   .visitFooter > div:last-child {
     margin-top: 66px;
+  }
+
+  .emailLink {
+    font-size: clamp(16px, 4.2vw, 22px) !important;
   }
 }
 
