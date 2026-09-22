@@ -1123,26 +1123,71 @@
 }
 
 @media (max-width: 1023px) {
+  /* ---------------------------------------------------------------------
+     Mobile control panel. Every size and position the phone / tablet layout
+     can be tuned by is named here; the rules below only read these. Change a
+     number in this block rather than hunting the rule that used to hold it.
+     The max-width: 767px panel further down redefines the ones the phone
+     needs tighter. --------------------------------------------------- */
+  .page {
+    --m-gutter: clamp(18px, 5vw, 40px);
+
+    --m-bento-title-size: clamp(64px, 15vw, 108px);
+    --m-bento-title-lead: 0.8;
+    --m-bento-gap: 22px;
+    --m-cell-min-h: 300px;
+    --m-color-cell-min-h: 270px;
+
+    --m-portrait-primary-h: min(132vw, 720px);
+    --m-portrait-primary-tilt: 0.55deg;
+    --m-portrait-candid-w: 72%;
+    --m-portrait-candid-h: min(72vw, 480px);
+    --m-portrait-candid-tilt: -0.7deg;
+
+    --m-chapter-title-size: clamp(48px, 13vw, 78px);
+    --m-chapter-header-gap: 52px;
+    --m-chapter-rail-gap: 14px;
+    --m-chapter-figure-w: 82vw;
+    --m-chapter-figure-h: min(126vw, 680px);
+
+    --m-store-pad-top: 48px;
+    --m-store-min-h: 58vh;
+    --m-seal-size: 96px;
+    --m-seal-badge: 76px;
+    --m-store-caption-inset: 16px;
+
+    --m-gallery-card-w: 84vw;
+    --m-gallery-card-ratio: 4 / 5;
+    --m-gallery-gap: 14px;
+
+    --m-coda-img-min-h: 72vh;
+    --m-footer-split-gap: 66px;
+
+    --m-needlepoint-top: 118vh;
+    --m-needlepoint-w: 78vw;
+    --m-embroidery-bottom: 18vh;
+    --m-embroidery-w: 76vw;
+  }
   .fixedTexture {
     position: absolute;
   }
 
   .fixedNeedlepoint {
-    top: 118vh;
+    top: var(--m-needlepoint-top);
     right: -25vw;
-    width: 78vw;
+    width: var(--m-needlepoint-w);
   }
 
   .fixedEmbroidery {
-    bottom: 18vh;
+    bottom: var(--m-embroidery-bottom);
     left: -28vw;
-    width: 76vw;
+    width: var(--m-embroidery-w);
   }
 
   .bentoSection,
   .chapterSection {
-    padding-right: clamp(18px, 5vw, 40px);
-    padding-left: clamp(18px, 5vw, 40px);
+    padding-right: var(--m-gutter);
+    padding-left: var(--m-gutter);
   }
 
   .bentoIntro,
@@ -1154,8 +1199,8 @@
   .bentoIntro h2,
   .chapterHeader h2 {
     margin-top: 20px;
-    font-size: clamp(64px, 15vw, 108px);
-    line-height: 0.8;
+    font-size: var(--m-bento-title-size);
+    line-height: var(--m-bento-title-lead);
   }
 
   .bentoLead,
@@ -1166,30 +1211,30 @@
   .bentoGrid {
     display: flex;
     flex-direction: column;
-    gap: 22px;
+    gap: var(--m-bento-gap);
   }
 
   .statementCell,
   .instinctCell,
   .locationCell {
-    min-height: 300px;
+    min-height: var(--m-cell-min-h);
     transform: none;
   }
 
   .portraitPrimary {
-    height: min(132vw, 720px);
-    transform: rotate(0.55deg);
+    height: var(--m-portrait-primary-h);
+    transform: rotate(var(--m-portrait-primary-tilt));
   }
 
   .portraitCandid {
-    width: 72%;
-    height: min(72vw, 480px);
+    width: var(--m-portrait-candid-w);
+    height: var(--m-portrait-candid-h);
     align-self: flex-end;
-    transform: rotate(-0.7deg);
+    transform: rotate(var(--m-portrait-candid-tilt));
   }
 
   .colorCell {
-    min-height: 270px;
+    min-height: var(--m-color-cell-min-h);
     /* The cut corners are sized for the desktop cell; on a wide, short phone
        cell they slice into the caption. */
     clip-path: none;
@@ -1205,11 +1250,11 @@
   .objectCell {
     grid-column: auto;
     grid-row: auto;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: var(--m-gallery-card-ratio);
   }
 
   .chapterHeader {
-    margin: 0 0 52px;
+    margin: 0 0 var(--m-chapter-header-gap);
   }
 
   .chapter {
@@ -1221,12 +1266,12 @@
   }
 
   .chapterQuote h3 {
-    font-size: clamp(48px, 13vw, 78px);
+    font-size: var(--m-chapter-title-size);
   }
 
   .chapterImages {
     display: flex;
-    gap: 14px;
+    gap: var(--m-chapter-rail-gap);
     margin: 32px -20px 0;
     padding: 0 20px 16px;
     overflow-x: auto;
@@ -1241,35 +1286,35 @@
 
   .chapterFigure,
   .chapterFigure:first-child {
-    flex: 0 0 82vw;
-    height: min(126vw, 680px);
+    flex: 0 0 var(--m-chapter-figure-w);
+    height: var(--m-chapter-figure-h);
     grid-row: auto;
     scroll-snap-align: start;
   }
 
   .storeSection {
-    padding: 48px 20px 64px;
+    padding: var(--m-store-pad-top) 20px 64px;
   }
 
   .storeFigure {
-    min-height: 58vh;
+    min-height: var(--m-store-min-h);
   }
 
   .storeSeal {
-    left: 16px;
-    width: 96px;
-    height: 96px;
+    left: var(--m-store-caption-inset);
+    width: var(--m-seal-size);
+    height: var(--m-seal-size);
   }
 
   .storeSeal :global(.rotating-badge) {
-    width: 76px;
-    height: 76px;
-    flex: 0 0 76px;
+    width: var(--m-seal-badge);
+    height: var(--m-seal-badge);
+    flex: 0 0 var(--m-seal-badge);
   }
 
   .storeCaption {
-    right: 16px;
-    left: 16px;
+    right: var(--m-store-caption-inset);
+    left: var(--m-store-caption-inset);
     max-width: none;
   }
 
@@ -1288,7 +1333,7 @@
   }
 
   .codaImage {
-    min-height: 72vh;
+    min-height: var(--m-coda-img-min-h);
   }
 
   .visitFooter {
@@ -1297,7 +1342,7 @@
   }
 
   .visitFooter > div:last-child {
-    margin-top: 66px;
+    margin-top: var(--m-footer-split-gap);
   }
 
   .emailLink {
@@ -1306,6 +1351,20 @@
 }
 
 @media (max-width: 767px) {
+  /* Phone overrides of the control panel above. */
+  .page {
+    --m-bento-title-size: clamp(78px, 21vw, 90px);
+    --m-bento-title-lead: 0.76;
+    --m-cell-min-h: 320px;
+    --m-location-min-h: 340px;
+    --m-cell-pad: 36px 34px;
+    --m-quote-size: clamp(29px, 8vw, 34px);
+    --m-instinct-size: clamp(36px, 9.7vw, 42px);
+    --m-location-size: clamp(26px, 7.2vw, 30px);
+    --m-store-pad-top: 104px;
+    --m-seal-size: 192px;
+    --m-seal-badge: 152px;
+  }
   .phonePaper,
   .phoneGrunge {
     -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 84%, rgba(0, 0, 0, 0.72) 92%, transparent 100%);
@@ -1347,8 +1406,8 @@
 
   .bentoIntro h2 {
     margin-top: 14px;
-    font-size: clamp(78px, 21vw, 90px);
-    line-height: 0.76;
+    font-size: var(--m-bento-title-size);
+    line-height: var(--m-bento-title-lead);
   }
 
   .bentoLead {
@@ -1358,8 +1417,8 @@
   .statementCell,
   .instinctCell {
     display: grid;
-    min-height: 320px;
-    padding: 36px 34px;
+    min-height: var(--m-cell-min-h);
+    padding: var(--m-cell-pad);
     place-items: center;
   }
 
@@ -1371,7 +1430,7 @@
     width: 100%;
     max-width: 15ch;
     margin: 0;
-    font-size: clamp(29px, 8vw, 34px);
+    font-size: var(--m-quote-size);
     line-height: 1.08;
     text-align: center;
   }
@@ -1383,15 +1442,15 @@
   .instinctCell h3 {
     width: 100%;
     margin: 0;
-    font-size: clamp(36px, 9.7vw, 42px);
+    font-size: var(--m-instinct-size);
     line-height: 0.92;
     text-align: center;
   }
 
   .locationCell {
     display: grid;
-    min-height: 340px;
-    padding: 36px 34px;
+    min-height: var(--m-location-min-h);
+    padding: var(--m-cell-pad);
     place-items: center;
   }
 
@@ -1408,7 +1467,7 @@
     width: 100%;
     max-width: 16ch;
     margin: 0;
-    font-size: clamp(26px, 7.2vw, 30px);
+    font-size: var(--m-location-size);
     line-height: 1.1;
     text-align: center;
   }
@@ -1418,18 +1477,18 @@
   }
 
   .storeSection {
-    padding-top: 104px;
+    padding-top: var(--m-store-pad-top);
   }
 
   .storeSeal {
-    width: 192px;
-    height: 192px;
+    width: var(--m-seal-size);
+    height: var(--m-seal-size);
   }
 
   .storeSeal :global(.rotating-badge) {
-    width: 152px;
-    height: 152px;
-    flex-basis: 152px;
+    width: var(--m-seal-badge);
+    height: var(--m-seal-badge);
+    flex-basis: var(--m-seal-badge);
   }
 
   .objectGallery {
@@ -1439,7 +1498,7 @@
   .objectGrid {
     display: flex;
     max-width: none;
-    gap: 14px;
+    gap: var(--m-gallery-gap);
     margin: 0;
     padding: 0 20px 16px 0;
     overflow-x: auto;
@@ -1454,8 +1513,8 @@
   }
 
   .objectCell {
-    flex: 0 0 84vw;
-    aspect-ratio: 4 / 5;
+    flex: 0 0 var(--m-gallery-card-w);
+    aspect-ratio: var(--m-gallery-card-ratio);
     scroll-snap-align: start;
   }
 }
