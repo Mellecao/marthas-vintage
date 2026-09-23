@@ -26,7 +26,7 @@ export function MarthaBento() {
         <figure className={`${styles.bentoCell} ${styles.portraitPrimary}`}>
           <div className={styles.textileCropA}>
             <Image
-              src="/assets/site/textile-cargo/portraits/martha-frontal.webp"
+              src="/assets/site/photos/martha.png"
               alt="Martha smiling in a white crochet top"
               fill
               sizes="(min-width: 1024px) 25vw, 82vw"

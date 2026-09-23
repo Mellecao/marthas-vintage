@@ -34,9 +34,29 @@ const suravaram = Suravaram({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ||
+      (process.env.VERCEL_PROJECT_PRODUCTION_URL
+        ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+        : "http://localhost:3000"),
+  ),
   title: "Martha's Vintage | Bastrop, Texas",
   description:
     "A personal collection of vintage clothing, textiles, accessories and beautiful oddities.",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "Martha's Vintage",
+    title: "Martha's Vintage | Bastrop, Texas",
+    description:
+      "A personal collection of vintage clothing, textiles, accessories and beautiful oddities.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Martha's Vintage | Bastrop, Texas",
+    description:
+      "A personal collection of vintage clothing, textiles, accessories and beautiful oddities.",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
