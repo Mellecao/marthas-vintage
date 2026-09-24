@@ -113,6 +113,11 @@ export function LogoLoader() {
           autoPlay
           muted
           playsInline
+          controls={false}
+          controlsList="nodownload nofullscreen noplaybackrate noremoteplayback"
+          disablePictureInPicture
+          disableRemotePlayback
+          tabIndex={-1}
           preload="auto"
           onCanPlay={() => setReady(true)}
           onEnded={() => setEnded(true)}
@@ -124,6 +129,10 @@ export function LogoLoader() {
             objectFit: "contain",
             objectPosition: "center",
             background: LOADER_BG,
+            border: 0,
+            outline: "none",
+            boxShadow: "none",
+            pointerEvents: "none",
           }}
         />
       ) : null}
